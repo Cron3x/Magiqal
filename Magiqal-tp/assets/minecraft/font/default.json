@@ -79,21 +79,21 @@
         },
         {
             "type": "bitmap",
-            "file": "minecraft:block/purpur_pillar_top.png",
+            "file": "minecraft:block/beacon.png",
             "ascent": 16,
             "height": 16,
             "chars": ["\uEA01"]
         },
         {
             "type": "bitmap",
-            "file": "minecraft:block/purpur_pillar.png",
+            "file": "minecraft:block/beacon.png",
             "ascent": 16,
             "height": 16,
             "chars": ["\uEA02"]
         },
         {
             "type": "bitmap",
-            "file": "minecraft:block/polished_basalt_side.png",
+            "file": "minecraft:block/quartz_pillar.png",
             "ascent": 16,
             "height": 16,
             "chars": ["\uEA03"]

@@ -48,7 +48,8 @@ public class ItemListener implements Listener {
             }
           }
           case TRANSMUTATION -> {
-            if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.ENCHANTING_TABLE)) return;
+            if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.BEACON)) return;
+            event.setCancelled(true);
             Location loc = event.getClickedBlock().getLocation();
             World world = event.getClickedBlock().getLocation().getWorld();
             if (!(ManaUtils.hasEnoughMana(player, 52))) return;
@@ -61,6 +62,10 @@ public class ItemListener implements Listener {
           if (!item.getItemMeta().getAsString().contains("LodestoneTracked:1")) return;
           if (!(event.getAction() == Action.RIGHT_CLICK_AIR || !(event.getAction() == Action.RIGHT_CLICK_BLOCK  && event.getClickedBlock().getType() == Material.LODESTONE))) return;
           CompassMeta compassMeta = (CompassMeta) item.getItemMeta();
+
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Magical.getInstance(), () -> {
+
+        }, 0, 20);
 
           double lodeposX = compassMeta.getLodestone().getBlockX();
           double lodeposY = compassMeta.getLodestone().getBlockY();
