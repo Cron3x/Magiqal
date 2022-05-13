@@ -1,21 +1,18 @@
 # Magic-Tools-Plugin (Spigot/PaperMC)
 ---
 
-If player is in survival mode, and holding a magic item.
+![](icon1000x400.png)
 
-
-13 Bars -> 26 Mana
-
-[IMAGE]
+You Will get a new bar above your 
 
 ---
 
 ##### Todo:
 - [x] Display Bar
 - [ ] implement regeneration
-	- [ ] over time
+    - [ ] over time
 	- [x] eating gaple
 	- [x] eating golden carrot
-	- [ ] eating op gaple
-	- [ ] totem of unding
+	- [x] eating op gaple
+	- [x] totem of unding
 - [ ] implement Flight ring
