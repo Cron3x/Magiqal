@@ -1,11 +1,11 @@
 package xyz.eburg.cx.magical.listeners;
 
-import net.minecraft.advancements.critereon.UsedTotemTrigger;
+import net.minecraft.world.level.block.ChestBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Item;
+import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import xyz.eburg.cx.magical.Magical;
+import xyz.eburg.cx.magical.spells.FlightRing;
 import xyz.eburg.cx.magical.spells.TransmutationSpell;
 import xyz.eburg.cx.magical.tasks.ShowManaTask;
 import xyz.eburg.cx.magical.utils.BarCharacter;
@@ -58,8 +59,9 @@ public class ItemListener implements Listener {
             ManaUtils.removeManaAmount(player, 52);
           }
           case FLIGHT ->{
-            if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
-            ItemUtils.setAllowFlight(item, !ItemUtils.getAllowFlight(item));
+            if (!(event.getAction() == Action.RIGHT_CLICK_AIR) || event.getAction() == Action.RIGHT_CLICK_BLOCK) return;
+            Bukkit.broadcastMessage("LOL");
+            new FlightRing(item, player);
           }
         }
       }
@@ -90,8 +92,8 @@ public class ItemListener implements Listener {
     Player player = event.getPlayer();
     int manaration = 0;
     switch(event.getItem().getType()) {
-      case GOLDEN_APPLE -> manaration = 34;
-      case GOLDEN_CARROT -> manaration = 18;
+      case GOLDEN_APPLE           -> manaration = 34;
+      case GOLDEN_CARROT          -> manaration = 18;
       case ENCHANTED_GOLDEN_APPLE -> manaration = 18;
     }
 

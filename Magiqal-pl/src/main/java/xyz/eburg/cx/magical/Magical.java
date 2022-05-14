@@ -11,6 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.eburg.cx.magical.listeners.InventoryListener;
 import xyz.eburg.cx.magical.listeners.ItemListener;
 import xyz.eburg.cx.magical.recipes.crafting_table.FlightRingRecipe;
 import xyz.eburg.cx.magical.recipes.crafting_table.GuideBookRecipe;
@@ -43,11 +44,11 @@ public final class Magical extends JavaPlugin implements Listener {
     System.out.println("(DEBUG) MAGIQAL: Enabled!");
 
     this.getServer().getPluginManager().registerEvents(new ItemListener(), this);
+    this.getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
     new ShowManaTask().runTaskTimer(this, 0, 20L);
 
     this.getServer().getPluginManager().registerEvents(this, this);
-    //this.getCommand("wand").setExecutor(new DebugCommands());
 
     /* Recipes */
     new GuideBookRecipe();
@@ -68,6 +69,7 @@ public final class Magical extends JavaPlugin implements Listener {
                   .withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/paperweight @a"))),
                 Util.NIL_UUID
               );
+              //TODO: Dos not work, fix
               new GuideBookRecipe();
               new TransmutationStaffRecipe();
               new FlightRingRecipe();

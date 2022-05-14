@@ -56,20 +56,22 @@ public class ItemUtils {
   public static Boolean getAllowFlight(ItemStack item){
     ItemMeta meta = item.getItemMeta();
     PersistentDataContainer itemData = meta.getPersistentDataContainer();
-    if (itemData.get(NameSpaceKeys.keyItemSpell, PersistentDataType.INTEGER) == null) return false;
-    int allow = itemData.get(NameSpaceKeys.keyItemSpell, PersistentDataType.INTEGER);
+    if (itemData.get(NameSpaceKeys.keyItemFlying, PersistentDataType.INTEGER) == null) return false;
+    int allow = itemData.get(NameSpaceKeys.keyItemFlying, PersistentDataType.INTEGER);
     item.setItemMeta(meta);
     return allow >= 1;
   }
   public static void setAllowFlight(ItemStack item, Boolean allow){
     ItemMeta meta = item.getItemMeta();
     PersistentDataContainer itemData = meta.getPersistentDataContainer();
-    itemData.set(NameSpaceKeys.keyItemSpell, PersistentDataType.INTEGER, allow ? 1 : 0);
+    itemData.set(NameSpaceKeys.keyItemFlying, PersistentDataType.INTEGER, allow ? 1 : 0);
     //Set lore to show if enabled
     List<Component> lore = item.getItemMeta().lore();
-    for (Component comp : lore) {
-      Bukkit.broadcast(comp);
+    for (int i = 0; i < lore.toArray().length; i++) {
+      if (!(lore.get(i).toString().contains("Active:"))) continue;
+      lore.set(i, Component.text("Active: "+(allow ? 1 : 0)).color(TextColor.fromHexString("#275F8F")).decoration(TextDecoration.ITALIC, false));
     }
+    meta.lore(lore);
     item.setItemMeta(meta);
   }
 }
