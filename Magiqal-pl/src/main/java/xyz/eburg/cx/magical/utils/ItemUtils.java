@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -50,6 +51,25 @@ public class ItemUtils {
     ItemMeta meta = item.getItemMeta();
     PersistentDataContainer itemData = meta.getPersistentDataContainer();
     itemData.set(NameSpaceKeys.keyItemSpell, new MagicSpellDataType(), spell);
+    item.setItemMeta(meta);
+  }
+  public static Boolean getAllowFlight(ItemStack item){
+    ItemMeta meta = item.getItemMeta();
+    PersistentDataContainer itemData = meta.getPersistentDataContainer();
+    if (itemData.get(NameSpaceKeys.keyItemSpell, PersistentDataType.INTEGER) == null) return false;
+    int allow = itemData.get(NameSpaceKeys.keyItemSpell, PersistentDataType.INTEGER);
+    item.setItemMeta(meta);
+    return allow >= 1;
+  }
+  public static void setAllowFlight(ItemStack item, Boolean allow){
+    ItemMeta meta = item.getItemMeta();
+    PersistentDataContainer itemData = meta.getPersistentDataContainer();
+    itemData.set(NameSpaceKeys.keyItemSpell, PersistentDataType.INTEGER, allow ? 1 : 0);
+    //Set lore to show if enabled
+    List<Component> lore = item.getItemMeta().lore();
+    for (Component comp : lore) {
+      Bukkit.broadcast(comp);
+    }
     item.setItemMeta(meta);
   }
 }

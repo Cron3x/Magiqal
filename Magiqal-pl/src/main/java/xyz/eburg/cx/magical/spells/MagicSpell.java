@@ -7,4 +7,5 @@ public enum MagicSpell implements Serializable {
   FIREBALL,
   HOME_TELEPORT,
   TRANSMUTATION,
+  FLIGHT,
 }

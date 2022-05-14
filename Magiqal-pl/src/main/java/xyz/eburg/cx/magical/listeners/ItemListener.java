@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -56,6 +57,10 @@ public class ItemListener implements Listener {
             if (!new TransmutationSpell(world, loc).conjure()) return;
             ManaUtils.removeManaAmount(player, 52);
           }
+          case FLIGHT ->{
+            if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
+            ItemUtils.setAllowFlight(item, !ItemUtils.getAllowFlight(item));
+          }
         }
       }
       case COMPASS -> {
@@ -98,6 +103,7 @@ public class ItemListener implements Listener {
     }
     ManaUtils.setManaAmount(player, newScore);
   }
+
   @EventHandler
   public void triggerTotem(EntityResurrectEvent event){
     if (event.isCancelled() || !(event.getEntity() instanceof Player)) return;

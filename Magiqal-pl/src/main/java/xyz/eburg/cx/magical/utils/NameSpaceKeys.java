@@ -12,9 +12,12 @@ public interface NameSpaceKeys {
   NamespacedKey keyMageLevel = new NamespacedKey(Magical.getInstance(), "mage_level");
   NamespacedKey keyMageXP = new NamespacedKey(Magical.getInstance(), "mage_xp");
   NamespacedKey keyItemMagiqal = new NamespacedKey(Magical.getInstance(), "magiqal");
+
   NamespacedKey keyItemSpell = new NamespacedKey(Magical.getInstance(), "spell");
 
-  public static void addPersistenceKeys(Player player) {
+  NamespacedKey keyItemFlying = new NamespacedKey(Magical.getInstance(), "flying");
+
+  static void addPersistenceKeys(Player player) {
     PersistentDataContainer dataContainer = player.getPersistentDataContainer();
     if (!dataContainer.has(keyManaAmount)) dataContainer.set(keyManaAmount, PersistentDataType.INTEGER, 0); //should 52
     if (!dataContainer.has(keyShowManaBar)) dataContainer.set(keyShowManaBar, PersistentDataType.INTEGER, 0);

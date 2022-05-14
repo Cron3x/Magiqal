@@ -1,12 +1,27 @@
 package xyz.eburg.cx.magical;
 
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.eburg.cx.magical.listeners.ItemListener;
+import xyz.eburg.cx.magical.recipes.crafting_table.FlightRingRecipe;
 import xyz.eburg.cx.magical.recipes.crafting_table.GuideBookRecipe;
 import xyz.eburg.cx.magical.recipes.crafting_table.TransmutationStaffRecipe;
 import xyz.eburg.cx.magical.tasks.ShowManaTask;
+
+import java.util.Collection;
+
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
+import static net.minecraft.commands.arguments.EntityArgument.players;
 
 public final class Magical extends JavaPlugin implements Listener {
   FileConfiguration config = getConfig();
@@ -25,7 +40,6 @@ public final class Magical extends JavaPlugin implements Listener {
     config.addDefault("dynamic_mana_bar", false);
     config.options().copyDefaults(true);
     saveConfig();
-
     System.out.println("(DEBUG) MAGIQAL: Enabled!");
 
     this.getServer().getPluginManager().registerEvents(new ItemListener(), this);
@@ -38,5 +52,28 @@ public final class Magical extends JavaPlugin implements Listener {
     /* Recipes */
     new GuideBookRecipe();
     new TransmutationStaffRecipe();
+    new FlightRingRecipe();
+
+    /* Debug Commands */
+    ((CraftServer) this.getServer()).getServer().vanillaCommandDispatcher.getDispatcher().register(
+      literal("paperweight")
+        .requires(stack -> stack.hasPermission(stack.getServer().getOperatorUserPermissionLevel()))
+        .then(argument("players", players())
+          .executes(ctx -> {
+            final Collection<ServerPlayer> players = EntityArgument.getPlayers(ctx, "players");
+            for (final ServerPlayer player : players) {
+              player.sendMessage(
+                new TextComponent("reloading Recipes")
+                  .withStyle(ChatFormatting.ITALIC, ChatFormatting.GREEN)
+                  .withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/paperweight @a"))),
+                Util.NIL_UUID
+              );
+              new GuideBookRecipe();
+              new TransmutationStaffRecipe();
+              new FlightRingRecipe();
+            }
+            return players.size();
+          }))
+    );
   }
 }
