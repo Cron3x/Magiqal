@@ -18,6 +18,7 @@ public class InventoryListener implements Listener {
   @EventHandler
   public void onInvChange(InventoryCloseEvent event){
     Player player = (Player) event.getView().getPlayer();
+    if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) return;
     ItemStack[] items = player.getInventory().getContents();
     for (ItemStack item : items){
       if (item == null) continue;
@@ -39,6 +40,7 @@ public class InventoryListener implements Listener {
 
   @EventHandler
   public void onDropChange(PlayerDropItemEvent e){
+    if (e.getPlayer().getGameMode().equals(GameMode.CREATIVE) || e.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) return;
     if (!ItemUtils.getAllowFlight(e.getItemDrop().getItemStack())) return;
     Bukkit.broadcastMessage("droped Flight ring");
     ItemUtils.setAllowFlight(e.getItemDrop().getItemStack(), false);
