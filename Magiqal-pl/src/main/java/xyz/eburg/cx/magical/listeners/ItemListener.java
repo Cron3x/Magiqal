@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import xyz.eburg.cx.magical.Magical;
 import xyz.eburg.cx.magical.spells.FlightRing;
+import xyz.eburg.cx.magical.spells.MagicSpell;
 import xyz.eburg.cx.magical.spells.TransmutationSpell;
 import xyz.eburg.cx.magical.tasks.ShowManaTask;
 import xyz.eburg.cx.magical.utils.BarCharacter;
@@ -27,7 +28,29 @@ import xyz.eburg.cx.magical.utils.ManaUtils;
 public class ItemListener implements Listener {
   @EventHandler
   public void onJoin(PlayerJoinEvent event){
+    Player player = event.getPlayer();
+    player.setAllowFlight(true);
+    player.setFlying(true);
+
     if (!Magical.getInstance().getConfig().getBoolean("dynamic_man_bar")) new ShowManaTask().runTaskTimer(Magical.getInstance(), 0L, 30L);
+
+    ItemStack[] items = player.getInventory().getContents();
+    for (ItemStack item : items){
+      if (item == null) continue;
+      System.out.println("@ join: item ("+item.getType()+") is not null");
+      if (!item.getType().equals(Material.CLOCK)) continue;
+      System.out.println("@ join: item ("+item.getType()+") is a clock");
+      if (!ItemUtils.isMagiqal(item)) continue;
+      System.out.println("@ join: item ("+item.getType()+") is magiqal");
+      if (!ItemUtils.getSpell(item).equals(MagicSpell.FLIGHT)) continue;
+      System.out.println("@ join: item ("+item.getType()+") has Flight Spell");
+      if (!ItemUtils.getAllowFlight(item)) continue;
+      System.out.println("@ join: item ("+item.getType()+") allows flight");
+      new FlightRing(item, player, true);
+      return;
+    }
+    player.setAllowFlight(false);
+    player.setFlying(false);
   }
 
   @EventHandler
@@ -59,7 +82,8 @@ public class ItemListener implements Listener {
             ManaUtils.removeManaAmount(player, 52);
           }
           case FLIGHT ->{
-            if (!(event.getAction() == Action.RIGHT_CLICK_AIR) || event.getAction() == Action.RIGHT_CLICK_BLOCK) return;
+            if (!(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
+            if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getState() instanceof Container) return;
             Bukkit.broadcastMessage("LOL");
             new FlightRing(item, player);
           }

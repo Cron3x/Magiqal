@@ -12,4 +12,9 @@ public class FlightRing {
     ItemUtils.setAllowFlight(item, !allow_flight);
     player.setAllowFlight(!allow_flight);
   }
+  public FlightRing(ItemStack item, Player player, Boolean allow) {
+    if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) return;
+    ItemUtils.setAllowFlight(item, allow);
+    player.setAllowFlight(allow);
+  }
 }
