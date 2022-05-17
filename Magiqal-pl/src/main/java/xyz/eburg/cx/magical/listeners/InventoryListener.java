@@ -16,22 +16,6 @@ import xyz.eburg.cx.magical.utils.ItemUtils;
 public class InventoryListener implements Listener {
 
   @EventHandler
-  public void onInvClickChange(InventoryClickEvent e){
-
-    //TODO: if the totem gets put in chest, disable flight
-    /*Bukkit.broadcastMessage("TEST");
-    if (!e.getInventory().getType().equals(InventoryType.PLAYER)) return;
-    Player player = (Player) e.getView().getPlayer();
-    if (!player.getAllowFlight() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
-
-    for (ItemStack it : e.getInventory().getContents()){
-      assert it != null;
-      if (ItemUtils.getSpell(it).equals(MagicSpell.FLIGHT)) return;
-    }
-    player.setAllowFlight(false);
-    */
-  }
-  @EventHandler
   public void onInvChange(InventoryCloseEvent event){
     Player player = (Player) event.getView().getPlayer();
     ItemStack[] items = player.getInventory().getContents();
