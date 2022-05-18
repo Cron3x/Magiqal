@@ -1,11 +1,12 @@
 package xyz.eburg.cx.magical.listeners;
 
+import net.kyori.adventure.text.Component;
 import net.minecraft.world.level.block.ChestBlock;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Container;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Tripwire;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +15,7 @@ import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import xyz.eburg.cx.magical.Magical;
@@ -29,34 +31,57 @@ public class ItemListener implements Listener {
   @EventHandler
   public void onJoin(PlayerJoinEvent event){
     Player player = event.getPlayer();
-    player.setAllowFlight(true);
-    player.setFlying(true);
 
     if (!Magical.getInstance().getConfig().getBoolean("dynamic_man_bar")) new ShowManaTask().runTaskTimer(Magical.getInstance(), 0L, 30L);
-
-    ItemStack[] items = player.getInventory().getContents();
-    for (ItemStack item : items){
-      if (item == null) continue;
-      System.out.println("@ join: item ("+item.getType()+") is not null");
-      if (!item.getType().equals(Material.CLOCK)) continue;
-      System.out.println("@ join: item ("+item.getType()+") is a clock");
-      if (!ItemUtils.isMagiqal(item)) continue;
-      System.out.println("@ join: item ("+item.getType()+") is magiqal");
-      if (!ItemUtils.getSpell(item).equals(MagicSpell.FLIGHT)) continue;
-      System.out.println("@ join: item ("+item.getType()+") has Flight Spell");
-      if (!ItemUtils.getAllowFlight(item)) continue;
-      System.out.println("@ join: item ("+item.getType()+") allows flight");
-      new FlightRing(item, player, true);
-      return;
+    if (player.getGameMode().equals(GameMode.ADVENTURE) || player.getGameMode().equals(GameMode.SURVIVAL)) {
+      player.setAllowFlight(true);
+      player.setFlying(true);
+      ItemStack[] items = player.getInventory().getContents();
+      for (ItemStack item : items){
+        if (item == null) continue;
+        System.out.println("@ join: item ("+item.getType()+") is not null");
+        if (!item.getType().equals(Material.CLOCK)) continue;
+        System.out.println("@ join: item ("+item.getType()+") is a clock");
+        if (!ItemUtils.isMagiqal(item)) continue;
+        System.out.println("@ join: item ("+item.getType()+") is magiqal");
+        if (!ItemUtils.getSpell(item).equals(MagicSpell.FLIGHT)) continue;
+        System.out.println("@ join: item ("+item.getType()+") has Flight Spell");
+        if (!ItemUtils.getAllowFlight(item)) continue;
+        System.out.println("@ join: item ("+item.getType()+") allows flight");
+        new FlightRing(item, player, true);
+        return;
+      }
+      player.setAllowFlight(false);
+      player.setFlying(false);
     }
-    player.setAllowFlight(false);
-    player.setFlying(false);
+
   }
 
   @EventHandler
   public void onUserItem(PlayerInteractEvent event){
     Player player = event.getPlayer();
     ItemStack item = event.getItem();
+
+    if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.BEACON)){
+      Location beaconLoc = event.getClickedBlock().getLocation();
+      Location altarLoc = new Location(beaconLoc.getWorld(), (double) beaconLoc.getBlockX(), (double) beaconLoc.getBlockY()+1.0, (double) beaconLoc.getBlockZ());
+
+      BlockData blockData = event.getClickedBlock().getWorld().getBlockData(altarLoc);
+      if (!(blockData instanceof Tripwire tripwire)) return;
+      tripwire.setDisarmed(true);
+      tripwire.setAttached(false);
+      tripwire.setFace(BlockFace.NORTH, true);
+      tripwire.setFace(BlockFace.EAST, true);
+      tripwire.setFace(BlockFace.SOUTH, true);
+      tripwire.setFace(BlockFace.WEST, true);
+      tripwire.setPowered(true);
+      Bukkit.broadcastMessage("HELLO-adwfeghjki");
+      if (!event.getClickedBlock().getWorld().getBlockData(altarLoc).equals(tripwire)) return;
+      Inventory customInv = Bukkit.createInventory(null, 9, Component.text("Light Crafing Altar"));
+      player.closeInventory();
+      player.openInventory(customInv);
+    }
+
     if (item == null ) return;
     if (item.getType() == Material.COMPASS && event.getAction() == Action.RIGHT_CLICK_BLOCK  && event.getClickedBlock().getType() == Material.LODESTONE && !ItemUtils.isMagiqal(item)) {
       ItemUtils.setMagiqal(item, true);
