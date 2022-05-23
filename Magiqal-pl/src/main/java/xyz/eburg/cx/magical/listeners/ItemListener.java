@@ -62,7 +62,7 @@ public class ItemListener implements Listener {
     Player player = event.getPlayer();
     ItemStack item = event.getItem();
 
-    if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.BEACON)){
+    if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.SEA_LANTERN)){
       Location beaconLoc = event.getClickedBlock().getLocation();
       Location altarLoc = new Location(beaconLoc.getWorld(), (double) beaconLoc.getBlockX(), (double) beaconLoc.getBlockY()+1.0, (double) beaconLoc.getBlockZ());
 
@@ -77,8 +77,10 @@ public class ItemListener implements Listener {
       tripwire.setPowered(true);
       Bukkit.broadcastMessage("HELLO-adwfeghjki");
       if (!event.getClickedBlock().getWorld().getBlockData(altarLoc).equals(tripwire)) return;
-      Inventory customInv = Bukkit.createInventory(null, 9, Component.text("Light Crafing Altar"));
       player.closeInventory();
+      Inventory customInv = Bukkit.createInventory(player, 9, Component.text("Light Crafing Altar"));
+      ItemStack gui0 = new ItemStack(Material.GOLDEN_HOE);
+      customInv.setItem(0, gui0);
       player.openInventory(customInv);
     }
 
@@ -98,7 +100,7 @@ public class ItemListener implements Listener {
             }
           }
           case TRANSMUTATION -> {
-            if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.BEACON)) return;
+            if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.SEA_LANTERN)) return;
             event.setCancelled(true);
             Location loc = event.getClickedBlock().getLocation();
             World world = event.getClickedBlock().getLocation().getWorld();
