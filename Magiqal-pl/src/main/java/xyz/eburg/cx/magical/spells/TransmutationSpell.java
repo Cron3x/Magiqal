@@ -63,8 +63,11 @@ public class TransmutationSpell {
       && this.world.getBlockAt(pillarSW0).getType().equals( Material.QUARTZ_PILLAR)
       && this.world.getBlockAt(pillarSW1).getType().equals( Material.QUARTZ_PILLAR)
       && this.world.getBlockAt(pillarSW2).getType().equals( Material.AMETHYST_BLOCK)
-      && this.world.getBlockAt(altarPos).getType().equals(Material.AIR)
-    )) return false;
+      && (this.world.getBlockAt(altarPos).getType().equals(Material.AIR)
+          || this.world.getBlockAt(altarPos).getType().equals(Material.CAVE_AIR)
+          || this.world.getBlockAt(altarPos).getType().equals(Material.VOID_AIR)
+      ))) return false;
+
     this.world.strikeLightningEffect(pillarSE2);
     this.world.getBlockAt(pillarSE2).setType(Material.BUDDING_AMETHYST, true);
     this.world.strikeLightningEffect(pillarSW2);

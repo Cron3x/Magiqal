@@ -15,6 +15,7 @@ import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
@@ -92,7 +93,7 @@ public class ItemListener implements Listener {
 
     if (!ItemUtils.isMagiqal(item)) return;
     switch (item.getType()){
-      case CLOCK -> { //Maybe something like command_block
+      case CLOCK -> {
         switch (ItemUtils.getSpell(item)) {
           case FIREBALL -> {
             if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -101,7 +102,6 @@ public class ItemListener implements Listener {
           }
           case TRANSMUTATION -> {
             if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.SEA_LANTERN)) return;
-            event.setCancelled(true);
             Location loc = event.getClickedBlock().getLocation();
             World world = event.getClickedBlock().getLocation().getWorld();
             if (!(ManaUtils.hasEnoughMana(player, 52))) return;
@@ -162,5 +162,13 @@ public class ItemListener implements Listener {
     if (event.isCancelled() || !(event.getEntity() instanceof Player)) return;
     Player player = (Player) event.getEntity();
     ManaUtils.setManaAmount(player, 52);
+  }
+
+  //Migrate to own file
+  @EventHandler
+  public void onSneak(PlayerToggleSneakEvent event){
+    Player player = event.getPlayer();
+    event.getPlayer().getLocation(player.getWorld(),player.getLocation().setY(-1.0));
+
   }
 }
