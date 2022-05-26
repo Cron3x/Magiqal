@@ -1,6 +1,7 @@
 package xyz.eburg.cx.magical.listeners;
 
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
@@ -167,7 +168,9 @@ public class ItemListener implements Listener {
   @EventHandler
   public void onSneak(PlayerToggleSneakEvent event){
     Player player = event.getPlayer();
-    //event.getPlayer().getLocation(player.getWorld(),player.getLocation().setY(-1.0));
+
+    Block potTeleporter = event.getPlayer().getWorld().getBlockAt(player.getLocation().subtract(0,-1,0));
+    if (!potTeleporter.getType().equals(Material.LODESTONE)) return;
 
   }
 }

@@ -24,18 +24,10 @@ import java.util.List;
 public class CraftingAltarGUI {
   private final Component altarComponent = Component.text("Light Crafting Altar");
   private Player player = null;
-  private Inventory inventory = null;
   //> Crafting Slots
   //  10 11 12
   //  19 20 21 25
   //  28 29 30 32
-  public CraftingAltarGUI(Player player, Inventory inventory) {
-    this.player = player;
-    this.inventory = inventory;
-  }
-  public CraftingAltarGUI(Inventory inventory) {
-    this.inventory = inventory;
-  }
   public CraftingAltarGUI(Player player) {
     this.player = player;
   }
@@ -57,9 +49,13 @@ public class CraftingAltarGUI {
     barrierMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
     barrier.setItemMeta(barrierMeta);
     for (int i = 0; i < 45; i++) {
-      if (i == 0 || i == 10 || i == 11 || i == 12 || i == 19 || i == 20 || i == 21 || i == 25 || i == 28 || i == 29 || i == 30 || i == 32) continue;
-      customInv.setItem(i, barrier);
+      if (i == 0 || i == 10 || i == 11 || i == 12 || i == 19 || i == 20 || i == 21 || i == 25 || i == 28 || i == 29 || i == 30 || i == 32) {
+        customInv.setItem(25, new ItemStack(Material.AIR));
+      } else {
+        customInv.setItem(i, barrier);
+      }
     }
+
 
 
     player.openInventory(customInv);
@@ -90,6 +86,7 @@ public class CraftingAltarGUI {
   }
 
   public void update() {
+    Inventory inventory = player.getOpenInventory().getTopInventory();
     if (!(inventory.getItem(0) != null && inventory.getItem(0).getType().equals(Material.GOLDEN_HOE) && inventory.getItem(0).getItemMeta().getCustomModelData() == 1)) return;
     ItemStack craftingSlot1 = inventory.getItem(10);
     ItemStack craftingSlot2 = inventory.getItem(11);
@@ -129,15 +126,17 @@ public class CraftingAltarGUI {
         Player pl = (Player) he;
         pl.updateInventory();
       }
-      inventory.setItem(10, null);
-      inventory.setItem(11, null);
-      inventory.setItem(12, null);
-      inventory.setItem(19, null);
-      inventory.setItem(20, null);
-      inventory.setItem(21, null);
-      inventory.setItem(28, null);
-      inventory.setItem(29, null);
-      inventory.setItem(30, null);
+      if (player.getOpenInventory().getCursor() != null && !player.getOpenInventory().getCursor().equals(result)) {
+        inventory.setItem(10, null);
+        inventory.setItem(11, null);
+        inventory.setItem(12, null);
+        inventory.setItem(19, null);
+        inventory.setItem(20, null);
+        inventory.setItem(21, null);
+        inventory.setItem(28, null);
+        inventory.setItem(29, null);
+        inventory.setItem(30, null);
+      }
     }
   }
 }
