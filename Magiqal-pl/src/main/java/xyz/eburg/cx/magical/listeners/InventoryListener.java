@@ -11,13 +11,15 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import xyz.eburg.cx.magical.spells.FlightRing;
 import xyz.eburg.cx.magical.spells.MagicSpell;
+import xyz.eburg.cx.magical.ui.CraftingAltarGUI;
 import xyz.eburg.cx.magical.utils.ItemUtils;
 
 public class InventoryListener implements Listener {
 
   @EventHandler
-  public void onInvChange(InventoryCloseEvent event){
+  public void onInvClose(InventoryCloseEvent event){
     Player player = (Player) event.getView().getPlayer();
+    new CraftingAltarGUI(player).closing();
     if (player.getGameMode().equals(GameMode.CREATIVE) || player.getGameMode().equals(GameMode.SPECTATOR)) return;
     ItemStack[] items = player.getInventory().getContents();
     for (ItemStack item : items){
@@ -35,6 +37,11 @@ public class InventoryListener implements Listener {
       return;
     }
     player.setAllowFlight(false);
+  }
+
+  @EventHandler
+  public void onInvChange(InventoryClickEvent event){
+    new CraftingAltarGUI( event.getClickedInventory()).update();
   }
 
 

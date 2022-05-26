@@ -1,7 +1,5 @@
 package xyz.eburg.cx.magical.listeners;
 
-import net.kyori.adventure.text.Component;
-import net.minecraft.world.level.block.ChestBlock;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Container;
@@ -16,7 +14,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import xyz.eburg.cx.magical.Magical;
@@ -24,6 +21,7 @@ import xyz.eburg.cx.magical.spells.FlightRing;
 import xyz.eburg.cx.magical.spells.MagicSpell;
 import xyz.eburg.cx.magical.spells.TransmutationSpell;
 import xyz.eburg.cx.magical.tasks.ShowManaTask;
+import xyz.eburg.cx.magical.ui.CraftingAltarGUI;
 import xyz.eburg.cx.magical.utils.BarCharacter;
 import xyz.eburg.cx.magical.utils.ItemUtils;
 import xyz.eburg.cx.magical.utils.ManaUtils;
@@ -68,21 +66,19 @@ public class ItemListener implements Listener {
       Location altarLoc = new Location(beaconLoc.getWorld(), (double) beaconLoc.getBlockX(), (double) beaconLoc.getBlockY()+1.0, (double) beaconLoc.getBlockZ());
 
       BlockData blockData = event.getClickedBlock().getWorld().getBlockData(altarLoc);
-      if (!(blockData instanceof Tripwire tripwire)) return;
-      tripwire.setDisarmed(true);
-      tripwire.setAttached(false);
-      tripwire.setFace(BlockFace.NORTH, true);
-      tripwire.setFace(BlockFace.EAST, true);
-      tripwire.setFace(BlockFace.SOUTH, true);
-      tripwire.setFace(BlockFace.WEST, true);
-      tripwire.setPowered(true);
-      Bukkit.broadcastMessage("HELLO-adwfeghjki");
-      if (!event.getClickedBlock().getWorld().getBlockData(altarLoc).equals(tripwire)) return;
-      player.closeInventory();
-      Inventory customInv = Bukkit.createInventory(player, 9, Component.text("Light Crafing Altar"));
-      ItemStack gui0 = new ItemStack(Material.GOLDEN_HOE);
-      customInv.setItem(0, gui0);
-      player.openInventory(customInv);
+      if (blockData instanceof Tripwire tripwire) {
+        tripwire.setDisarmed(true);
+        tripwire.setAttached(false);
+        tripwire.setFace(BlockFace.NORTH, true);
+        tripwire.setFace(BlockFace.EAST, true);
+        tripwire.setFace(BlockFace.SOUTH, true);
+        tripwire.setFace(BlockFace.WEST, true);
+        tripwire.setPowered(true);
+        Bukkit.broadcastMessage("HELLO-adwfeghjki");
+        if (event.getClickedBlock().getWorld().getBlockData(altarLoc).equals(tripwire)) {
+          new CraftingAltarGUI(player).create();
+        }
+      }
     }
 
     if (item == null ) return;
@@ -102,10 +98,13 @@ public class ItemListener implements Listener {
           }
           case TRANSMUTATION -> {
             if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.SEA_LANTERN)) return;
+            Bukkit.broadcastMessage("> clicked SEA_LANTERN");
             Location loc = event.getClickedBlock().getLocation();
             World world = event.getClickedBlock().getLocation().getWorld();
             if (!(ManaUtils.hasEnoughMana(player, 52))) return;
+            Bukkit.broadcastMessage("> You have enugh Mana");
             if (!new TransmutationSpell(world, loc).conjure()) return;
+            Bukkit.broadcastMessage("> Placment does not failed");
             ManaUtils.removeManaAmount(player, 52);
           }
           case FLIGHT ->{
@@ -168,7 +167,7 @@ public class ItemListener implements Listener {
   @EventHandler
   public void onSneak(PlayerToggleSneakEvent event){
     Player player = event.getPlayer();
-    event.getPlayer().getLocation(player.getWorld(),player.getLocation().setY(-1.0));
+    //event.getPlayer().getLocation(player.getWorld(),player.getLocation().setY(-1.0));
 
   }
 }
