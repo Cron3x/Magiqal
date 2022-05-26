@@ -6,21 +6,12 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.Candle;
-import org.bukkit.block.data.type.Light;
 import org.bukkit.block.data.type.Tripwire;
-import org.bukkit.inventory.meta.BlockDataMeta;
-import org.bukkit.material.MaterialData;
-import org.bukkit.metadata.MetadataValue;
 
-import java.util.Arrays;
-
-public class TransmutationSpell {
+public class LightAltarTransmutationSpell {
   private final World world;
   private final Location loc;
-  public TransmutationSpell(World world, Location location) {
+  public LightAltarTransmutationSpell(World world, Location location) {
     this.loc = location;
     this.world = world;
   }

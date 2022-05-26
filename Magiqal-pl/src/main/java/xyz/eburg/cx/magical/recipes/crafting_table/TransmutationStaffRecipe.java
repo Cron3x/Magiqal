@@ -24,12 +24,12 @@ public class TransmutationStaffRecipe {
     meta.setCustomModelData(1);
     TextComponent name = Component.text("Staff of Transmutation").decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
     meta.displayName(name);
-    List<Component> lore = List.of(Component.text("Use this Staff to Activate Crafitng Altar").color(TextColor.fromHexString("#CC00FF")).decoration(TextDecoration.ITALIC, false));
+    List<Component> lore = List.of(Component.text("Use this Staff to activate Magiqal Blocks").color(TextColor.fromHexString("#CC00FF")).decoration(TextDecoration.ITALIC, false));
     meta.lore(lore);
     result.setItemMeta(meta);
     ItemUtils.setMagiqal(result, true);
     ItemUtils.setSpell(result, MagicSpell.TRANSMUTATION);
-    ItemUtils.setItemManaLore(result,"- " + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon);
+    ItemUtils.setItemManaLore(result,4);
 
     NamespacedKey key = new NamespacedKey(Magical.getInstance(), "transmutation_staff");
 

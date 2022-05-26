@@ -19,11 +19,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import xyz.eburg.cx.magical.Magical;
 import xyz.eburg.cx.magical.spells.FlightRing;
+import xyz.eburg.cx.magical.spells.LightAltarTransmutationSpell;
 import xyz.eburg.cx.magical.spells.MagicSpell;
-import xyz.eburg.cx.magical.spells.TransmutationSpell;
+import xyz.eburg.cx.magical.spells.TeleporterTransmutationSpell;
 import xyz.eburg.cx.magical.tasks.ShowManaTask;
 import xyz.eburg.cx.magical.ui.CraftingAltarGUI;
-import xyz.eburg.cx.magical.utils.BarCharacter;
 import xyz.eburg.cx.magical.utils.ItemUtils;
 import xyz.eburg.cx.magical.utils.ManaUtils;
 
@@ -85,7 +85,7 @@ public class ItemListener implements Listener {
     if (item == null ) return;
     if (item.getType() == Material.COMPASS && event.getAction() == Action.RIGHT_CLICK_BLOCK  && event.getClickedBlock().getType() == Material.LODESTONE && !ItemUtils.isMagiqal(item)) {
       ItemUtils.setMagiqal(item, true);
-      ItemUtils.setItemManaLore(item, ">  - " + BarCharacter.fullIcon + BarCharacter.fullIcon);
+      ItemUtils.setItemManaLore(item, 2);
     }
 
     if (!ItemUtils.isMagiqal(item)) return;
@@ -98,15 +98,26 @@ public class ItemListener implements Listener {
             }
           }
           case TRANSMUTATION -> {
-            if (!(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.SEA_LANTERN)) return;
-            Bukkit.broadcastMessage("> clicked SEA_LANTERN");
-            Location loc = event.getClickedBlock().getLocation();
-            World world = event.getClickedBlock().getLocation().getWorld();
-            if (!(ManaUtils.hasEnoughMana(player, 52))) return;
-            Bukkit.broadcastMessage("> You have enugh Mana");
-            if (!new TransmutationSpell(world, loc).conjure()) return;
-            Bukkit.broadcastMessage("> Placment does not failed");
-            ManaUtils.removeManaAmount(player, 52);
+            if ((event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.SEA_LANTERN)) {
+              Bukkit.broadcastMessage("> clicked SEA_LANTERN");
+              Location loc = event.getClickedBlock().getLocation();
+              World world = event.getClickedBlock().getLocation().getWorld();
+              if (!(ManaUtils.hasEnoughMana(player, 4))) return;
+              Bukkit.broadcastMessage("> You have enugh Mana");
+              if (!new LightAltarTransmutationSpell(world, loc).conjure()) return;
+              Bukkit.broadcastMessage("> Placment does not failed");
+              ManaUtils.removeManaAmount(player, 4);
+            }
+            if ((event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.LODESTONE)) {
+              Bukkit.broadcastMessage("> clicked LODESTONE");
+              Location loc = event.getClickedBlock().getLocation();
+              World world = event.getClickedBlock().getLocation().getWorld();
+              if (!(ManaUtils.hasEnoughMana(player, 4))) return;
+              Bukkit.broadcastMessage("> You have enugh Mana");
+              if (!new TeleporterTransmutationSpell(world, loc).conjure()) return;
+              Bukkit.broadcastMessage("> Placment does not failed");
+              ManaUtils.removeManaAmount(player, 4);
+            }
           }
           case FLIGHT ->{
             if (!(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
@@ -117,13 +128,9 @@ public class ItemListener implements Listener {
         }
       }
       case COMPASS -> {
-          if (!item.getItemMeta().getAsString().contains("LodestoneTracked:1")) return;
-          if (!(event.getAction() == Action.RIGHT_CLICK_AIR || !(event.getAction() == Action.RIGHT_CLICK_BLOCK  && event.getClickedBlock().getType() == Material.LODESTONE))) return;
-          CompassMeta compassMeta = (CompassMeta) item.getItemMeta();
-
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Magical.getInstance(), () -> {
-
-        }, 0, 20);
+        if (!item.getItemMeta().getAsString().contains("LodestoneTracked:1")) return;
+        if (!(event.getAction() == Action.RIGHT_CLICK_AIR || !(event.getAction() == Action.RIGHT_CLICK_BLOCK  && event.getClickedBlock().getType() == Material.LODESTONE))) return;
+        CompassMeta compassMeta = (CompassMeta) item.getItemMeta();
 
           double lodeposX = compassMeta.getLodestone().getBlockX();
           double lodeposY = compassMeta.getLodestone().getBlockY();

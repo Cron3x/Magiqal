@@ -14,6 +14,8 @@ import xyz.eburg.cx.magical.spells.MagicSpellDataType;
 
 import java.util.List;
 
+import static xyz.eburg.cx.magical.utils.BarCharacter.*;
+
 public class ItemUtils {
   public static Boolean isMagiqal(ItemStack item) {
     PersistentDataContainer itemData = item.getItemMeta().getPersistentDataContainer();
@@ -28,9 +30,66 @@ public class ItemUtils {
     itemData.set(NameSpaceKeys.keyItemMagiqal, PersistentDataType.INTEGER, is_magiqal ? 1 : 0);
     item.setItemMeta(meta);
   }
-  public static void setItemManaLore(ItemStack item, String loreText){
+  public static void setItemManaLore(ItemStack item, int mana){
     ItemMeta itemMeta = item.getItemMeta();
-    TextComponent tc = Component.text(loreText).color(TextColor.fromHexString("#FFFFFF")).decoration(TextDecoration.ITALIC, false);
+    String loreText = ">  - " + switch (mana) {
+      case 0  -> empty;
+      case 1  -> quarterIcon;
+      case 2  -> halfIcon;
+      case 3  -> quarterx3Icon;
+      case 4  -> fullIcon;
+      case 5  -> quarterIcon + fullIcon;
+      case 6  -> halfIcon + fullIcon;
+      case 7  -> quarterx3Icon + fullIcon;
+      case 8  -> fullIcon + fullIcon;
+      case 9  -> quarterIcon + fullIcon + fullIcon;
+      case 10 -> halfIcon + fullIcon + fullIcon;
+      case 11 -> quarterx3Icon + fullIcon + fullIcon;
+      case 12 -> fullIcon + fullIcon + fullIcon;
+      case 13 -> quarterIcon + fullIcon + fullIcon + fullIcon;
+      case 14 -> halfIcon + fullIcon + fullIcon + fullIcon;
+      case 15 -> quarterx3Icon + fullIcon + fullIcon + fullIcon;
+      case 16 -> fullIcon + fullIcon + fullIcon + fullIcon;
+      case 17 -> quarterIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 18 -> halfIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 19 -> quarterx3Icon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 20 -> fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 21 -> quarterIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 22 -> halfIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 23 -> quarterx3Icon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 24 -> fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 25 -> quarterIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 26 -> halfIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 27 -> quarterx3Icon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 28 -> fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 29 -> quarterIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 30 -> halfIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 31 -> quarterx3Icon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 32 -> fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 33 -> quarterIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 34 -> halfIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 35 -> quarterx3Icon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 36 -> fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 37 -> quarterIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 38 -> halfIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 39 -> quarterx3Icon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 40 -> fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 41 -> quarterIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 42 -> halfIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 43 -> quarterx3Icon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 44 -> fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 45 -> quarterIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 46 -> halfIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 47 -> quarterx3Icon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 48 -> fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 49 -> quarterIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 50 -> halfIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 51 -> quarterx3Icon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      case 52 -> fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon + fullIcon;
+      default -> fullIcon + ": " + mana;
+    };
+
+    TextComponent tc = Component.text(loreText.toString()).color(TextColor.fromHexString("#FFFFFF")).decoration(TextDecoration.ITALIC, false);
     if (itemMeta.lore() != null && itemMeta.lore().contains(tc)) return;
     List<Component> lore = List.of(tc);
 
@@ -41,6 +100,7 @@ public class ItemUtils {
     itemMeta.lore(lore);
     item.setItemMeta(itemMeta);
   }
+
   public static MagicSpell getSpell(ItemStack item){
     PersistentDataContainer itemData = item.getItemMeta().getPersistentDataContainer();
     MagicSpell spell = itemData.get(NameSpaceKeys.keyItemSpell, new MagicSpellDataType());

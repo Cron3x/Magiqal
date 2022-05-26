@@ -42,7 +42,7 @@ public class InventoryListener implements Listener {
   @EventHandler
   public void onInvChange(InventoryClickEvent event){
     event.getCurrentItem();
-    new CraftingAltarGUI((Player) event.getWhoClicked()).update();
+    new CraftingAltarGUI((Player) event.getWhoClicked()).update(event);
   }
 
 

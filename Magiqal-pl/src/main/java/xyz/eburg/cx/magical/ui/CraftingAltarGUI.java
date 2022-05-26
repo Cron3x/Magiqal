@@ -1,29 +1,21 @@
 package xyz.eburg.cx.magical.ui;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-import xyz.eburg.cx.magical.Magical;
+import xyz.eburg.cx.magical.recipes.altar.light.TotemOfFlight;
 import xyz.eburg.cx.magical.spells.MagicSpell;
-import xyz.eburg.cx.magical.utils.BarCharacter;
 import xyz.eburg.cx.magical.utils.ItemUtils;
-
-import java.util.HashMap;
-import java.util.List;
 
 public class CraftingAltarGUI {
   private final Component altarComponent = Component.text("Light Crafting Altar");
-  private Player player = null;
+  private final Player player;
   //> Crafting Slots
   //  10 11 12
   //  19 20 21 25
@@ -56,8 +48,6 @@ public class CraftingAltarGUI {
       }
     }
 
-
-
     player.openInventory(customInv);
   }
 
@@ -85,9 +75,10 @@ public class CraftingAltarGUI {
     if (slot32 != null && !slot32.getType().equals(Material.AIR) ) player.getWorld().dropItem(player.getLocation(), slot32);
   }
 
-  public void update() {
-    Inventory inventory = player.getOpenInventory().getTopInventory();
-    if (!(inventory.getItem(0) != null && inventory.getItem(0).getType().equals(Material.GOLDEN_HOE) && inventory.getItem(0).getItemMeta().getCustomModelData() == 1)) return;
+  public void update(InventoryClickEvent event) {
+    Inventory inventory = event.getClickedInventory();
+    if (inventory != null && !(inventory.getItem(0) != null && inventory.getItem(0).getType().equals(Material.GOLDEN_HOE) && inventory.getItem(0).getItemMeta().getCustomModelData() == 1)) return;
+
     ItemStack craftingSlot1 = inventory.getItem(10);
     ItemStack craftingSlot2 = inventory.getItem(11);
     ItemStack craftingSlot3 = inventory.getItem(12);
@@ -98,9 +89,11 @@ public class CraftingAltarGUI {
     ItemStack craftingSlot8 = inventory.getItem(29);
     ItemStack craftingSlot9 = inventory.getItem(30);
     ItemStack wantSlot = inventory.getItem(32);
+    ItemStack resultSlot = inventory.getItem(25);
 
-
-    if (   (craftingSlot1 == null || craftingSlot1.getType().equals(Material.AIR))
+    if (wantSlot != null && ItemUtils.getSpell(wantSlot).equals(MagicSpell.TRANSMUTATION)) {
+      ItemStack result = new TotemOfFlight().getItem();
+      if (   (craftingSlot1 == null || craftingSlot1.getType().equals(Material.AIR))
         && (craftingSlot2 != null && craftingSlot2.getType().equals(Material.DIAMOND))
         && (craftingSlot3 == null || craftingSlot3.getType().equals(Material.AIR))
         && (craftingSlot4 != null && craftingSlot4.getType().equals(Material.FEATHER))
@@ -109,24 +102,12 @@ public class CraftingAltarGUI {
         && (craftingSlot7 == null || craftingSlot7.getType().equals(Material.AIR))
         && (craftingSlot8 != null && craftingSlot8.getType().equals(Material.TOTEM_OF_UNDYING))
         && (craftingSlot9 == null || craftingSlot9.getType().equals(Material.AIR))
-    ){
-      ItemStack result = new ItemStack(Material.CLOCK);
-      ItemMeta meta = result.getItemMeta();
-      /**/meta.setCustomModelData(2);
-      TextComponent name = Component.text("Flight Ring").decorate(TextDecoration.BOLD).decoration(TextDecoration.ITALIC, false);
-      meta.displayName(name);
-      List<Component> lore = List.of(Component.text("Enables creative flight, right click to toggle").color(TextColor.fromHexString("#CC00FF")).decoration(TextDecoration.ITALIC, false), Component.text("Active: 0").color(TextColor.fromHexString("#275F8F")).decoration(TextDecoration.ITALIC, false), Component.text("").color(TextColor.fromHexString("#000000")).decoration(TextDecoration.ITALIC, false));
-      meta.lore(lore);
-      result.setItemMeta(meta);
-      ItemUtils.setMagiqal(result, true);
-      /**/ItemUtils.setSpell(result, MagicSpell.FLIGHT);
-      ItemUtils.setItemManaLore(result,"- " + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon + BarCharacter.fullIcon);
-      inventory.setItem(25,result);
-      for (HumanEntity he : inventory.getViewers()){
-        Player pl = (Player) he;
-        pl.updateInventory();
+        && (resultSlot != null && !resultSlot.equals(result))
+      ){
+        inventory.setItem(25,result);
+        player.updateInventory();
       }
-      if (player.getOpenInventory().getCursor() != null && !player.getOpenInventory().getCursor().equals(result)) {
+      if (event.getCurrentItem() != null && event.getCurrentItem().equals(result)) {
         inventory.setItem(10, null);
         inventory.setItem(11, null);
         inventory.setItem(12, null);
@@ -136,7 +117,12 @@ public class CraftingAltarGUI {
         inventory.setItem(28, null);
         inventory.setItem(29, null);
         inventory.setItem(30, null);
+        inventory.setItem(25, null);
       }
+      player.updateInventory();
+      if (event.getCurrentItem() != null && (event.getCurrentItem().getType().equals(Material.CLOCK) && event.getCurrentItem().getItemMeta().getCustomModelData() == 1)
+          || (event.getCurrentItem().getType().equals(Material.CLOCK) && event.getCurrentItem().getItemMeta().getCustomModelData() == 2147483647))
+        event.setCancelled(true);
     }
   }
 }
