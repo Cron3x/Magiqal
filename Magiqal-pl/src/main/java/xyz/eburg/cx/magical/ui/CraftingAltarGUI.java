@@ -77,7 +77,7 @@ public class CraftingAltarGUI {
 
   public void update(InventoryClickEvent event) {
     Inventory inventory = event.getClickedInventory();
-    if (inventory != null && !(inventory.getItem(0) != null && inventory.getItem(0).getType().equals(Material.GOLDEN_HOE) && inventory.getItem(0).getItemMeta().getCustomModelData() == 1)) return;
+    if (inventory == null || !(inventory.getItem(0) != null && inventory.getItem(0).getType().equals(Material.GOLDEN_HOE) && inventory.getItem(0).getItemMeta().getCustomModelData() == 1)) return;
 
     ItemStack craftingSlot1 = inventory.getItem(10);
     ItemStack craftingSlot2 = inventory.getItem(11);

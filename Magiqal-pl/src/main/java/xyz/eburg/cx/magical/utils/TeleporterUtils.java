@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import xyz.eburg.cx.magical.Magical;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
@@ -17,16 +18,16 @@ public class TeleporterUtils {
   public static void add(String name, Color color, Location location) throws IOException {
     Gson gson = new Gson();
 
-    String filePath = Magical.getInstance().getDataFolder().getPath()+ "teleporters.json";
-    Bukkit.broadcastMessage(filePath);
+    File confFile = new File(Magical.getInstance().getDataFolder(), "teleporters.json");
+    Bukkit.broadcastMessage(confFile.getPath());
     // create File
-    List<Teleporter> teleporterList = gson.fromJson(filePath,""), new TypeToken<List<Teleporter>>() {}.getType());
+    List<Teleporter> teleporterList = gson.fromJson(new FileReader(confFile), new TypeToken<List<Teleporter>>() {}.getType());
 
     Teleporter teleporter = new Teleporter(teleporterList.size(), name, color, location);
     teleporterList.add(teleporter);
     String json = gson.toJson(teleporterList); // Remember pretty printing? This is needed here.
-    new File(filePath).delete(); // won't throw an exception, don't worry.
-    Files.write(new File(filePath).toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+    new File(confFile, "teleporters.json").delete(); // won't throw an exception, don't worry.
+    Files.write(confFile.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
   }
 }
 

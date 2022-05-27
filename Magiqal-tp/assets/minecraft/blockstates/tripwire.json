@@ -13,6 +13,20 @@
       "apply": {
         "model": "minecraft:block/altar_light"
       }
+    },
+    {
+      "when": {
+        "north": "false",
+        "east": "true",
+        "south": "true",
+        "west": "true",
+        "attached": "false",
+        "disarmed": "true",
+        "powered": "true"
+      },
+      "apply": {
+        "model": "minecraft:block/altar_dark"
+      }
     }
   ]
 }

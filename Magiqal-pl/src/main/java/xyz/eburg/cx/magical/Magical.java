@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.eburg.cx.magical.listeners.InventoryListener;
 import xyz.eburg.cx.magical.listeners.ItemListener;
+import xyz.eburg.cx.magical.recipes.crafting_table.DimensionShardRecipe;
 import xyz.eburg.cx.magical.recipes.crafting_table.FlightRingRecipe;
 import xyz.eburg.cx.magical.recipes.crafting_table.GuideBookRecipe;
 import xyz.eburg.cx.magical.recipes.crafting_table.TransmutationStaffRecipe;
@@ -54,6 +55,7 @@ public final class Magical extends JavaPlugin implements Listener {
     new GuideBookRecipe();
     new TransmutationStaffRecipe();
     new FlightRingRecipe();
+    new DimensionShardRecipe();
 
     /* Debug Commands */
     ((CraftServer) this.getServer()).getServer().vanillaCommandDispatcher.getDispatcher().register(

@@ -18,10 +18,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import xyz.eburg.cx.magical.Magical;
-import xyz.eburg.cx.magical.spells.FlightRing;
-import xyz.eburg.cx.magical.spells.LightAltarTransmutationSpell;
-import xyz.eburg.cx.magical.spells.MagicSpell;
-import xyz.eburg.cx.magical.spells.TeleporterTransmutationSpell;
+import xyz.eburg.cx.magical.spells.*;
 import xyz.eburg.cx.magical.tasks.ShowManaTask;
 import xyz.eburg.cx.magical.ui.CraftingAltarGUI;
 import xyz.eburg.cx.magical.utils.ItemUtils;
@@ -105,6 +102,16 @@ public class ItemListener implements Listener {
               if (!(ManaUtils.hasEnoughMana(player, 4))) return;
               Bukkit.broadcastMessage("> You have enugh Mana");
               if (!new LightAltarTransmutationSpell(world, loc).conjure()) return;
+              Bukkit.broadcastMessage("> Placment does not failed");
+              ManaUtils.removeManaAmount(player, 4);
+            }
+            if ((event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.MAGMA_BLOCK)) {
+              Bukkit.broadcastMessage("> clicked SHROOMLIGHT");
+              Location loc = event.getClickedBlock().getLocation();
+              World world = event.getClickedBlock().getLocation().getWorld();
+              if (!(ManaUtils.hasEnoughMana(player, 4))) return;
+              Bukkit.broadcastMessage("> You have enugh Mana");
+              if (!new DarkAltarTransmutationSpell(world, loc).conjure()) return;
               Bukkit.broadcastMessage("> Placment does not failed");
               ManaUtils.removeManaAmount(player, 4);
             }
