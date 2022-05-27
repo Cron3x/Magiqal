@@ -14,6 +14,7 @@ public interface NameSpaceKeys {
   NamespacedKey keyItemMagiqal = new NamespacedKey(Magical.getInstance(), "magiqal");
 
   NamespacedKey keyItemSpell = new NamespacedKey(Magical.getInstance(), "spell");
+  NamespacedKey keyItemRecipe = new NamespacedKey(Magical.getInstance(), "recipe");
 
   NamespacedKey keyItemFlying = new NamespacedKey(Magical.getInstance(), "flying");
 

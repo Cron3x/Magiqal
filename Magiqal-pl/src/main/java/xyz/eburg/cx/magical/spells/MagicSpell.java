@@ -8,4 +8,5 @@ public enum MagicSpell implements Serializable {
   HOME_TELEPORT,
   TRANSMUTATION,
   FLIGHT,
+  ACTIVATE_PORTAL, CRAFTING_ITEM,
 }

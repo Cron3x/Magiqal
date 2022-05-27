@@ -4,11 +4,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import xyz.eburg.cx.magical.recipes.altar.dark.CraftingRecipe;
+import xyz.eburg.cx.magical.recipes.altar.dark.CraftingRecipeDataType;
 import xyz.eburg.cx.magical.spells.MagicSpell;
 import xyz.eburg.cx.magical.spells.MagicSpellDataType;
 
@@ -133,5 +134,18 @@ public class ItemUtils {
     }
     meta.lore(lore);
     item.setItemMeta(meta);
+  }
+
+    public static void setRecipe(ItemStack item, CraftingRecipe recipe) {
+      ItemMeta meta = item.getItemMeta();
+      PersistentDataContainer itemData = meta.getPersistentDataContainer();
+      itemData.set(NameSpaceKeys.keyItemRecipe, new CraftingRecipeDataType(), recipe);
+      item.setItemMeta(meta);
+    }
+  public static CraftingRecipe getRecipe(ItemStack item){
+    PersistentDataContainer itemData = item.getItemMeta().getPersistentDataContainer();
+    CraftingRecipe spell = itemData.get(NameSpaceKeys.keyItemRecipe, new CraftingRecipeDataType());
+    if (spell == null) return CraftingRecipe.NULL;
+    return spell;
   }
 }

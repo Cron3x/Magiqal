@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.eburg.cx.magical.Magical;
+import xyz.eburg.cx.magical.recipes.altar.dark.CraftingRecipe;
 import xyz.eburg.cx.magical.spells.MagicSpell;
 import xyz.eburg.cx.magical.utils.ItemUtils;
 
@@ -27,23 +28,24 @@ public class DimensionShardRecipe {
     meta.lore(lore);
     result.setItemMeta(meta);
     ItemUtils.setMagiqal(result, true);
-    ItemUtils.setSpell(result, MagicSpell.TRANSMUTATION);
-    ItemUtils.setItemManaLore(result,4);
+    ItemUtils.setSpell(result, MagicSpell.CRAFTING_ITEM);
+    ItemUtils.setRecipe(result, CraftingRecipe.DIMENSION_SHARD);
+    ItemUtils.setItemManaLore(result,1);
 
-    NamespacedKey key = new NamespacedKey(Magical.getInstance(), "transmutation_staff");
+    NamespacedKey key = new NamespacedKey(Magical.getInstance(), "unused_dimension_shard");
 
     // Create our custom recipe variable
     ShapedRecipe recipe = new ShapedRecipe(key, result);
 
     // Here we will set the places. E and S can represent anything, and the letters can be anything. Beware; this is case sensitive.
-    recipe.shape( "  A",
-      " S ",
-      "S  ");
+    recipe.shape( " A ",
+                  " S ",
+                  " A ");
 
     // Set what the letters represent.
     // E = Emerald, S = Stick
     recipe.setIngredient('A', Material.AMETHYST_SHARD);
-    recipe.setIngredient('S', Material.STICK);
+    recipe.setIngredient('S', Material.STONE);
 
     // Finally, add the recipe to the bukkit recipes
     Bukkit.addRecipe(recipe);
