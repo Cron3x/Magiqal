@@ -78,6 +78,24 @@ public class ItemListener implements Listener {
           new CraftingAltarGUI(player).create();
         }
       }
+    } else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.MAGMA_BLOCK)){
+      Location beaconLoc = event.getClickedBlock().getLocation();
+      Location altarLoc = new Location(beaconLoc.getWorld(), (double) beaconLoc.getBlockX(), (double) beaconLoc.getBlockY()+1.0, (double) beaconLoc.getBlockZ());
+
+      BlockData blockData = event.getClickedBlock().getWorld().getBlockData(altarLoc);
+      if (blockData instanceof Tripwire tripwire) {
+        tripwire.setDisarmed(true);
+        tripwire.setAttached(false);
+        tripwire.setFace(BlockFace.NORTH, false);
+        tripwire.setFace(BlockFace.EAST, true);
+        tripwire.setFace(BlockFace.SOUTH, true);
+        tripwire.setFace(BlockFace.WEST, true);
+        tripwire.setPowered(true);
+        Bukkit.broadcastMessage("HELLO-adwfeghjki");
+        if (event.getClickedBlock().getWorld().getBlockData(altarLoc).equals(tripwire)) {
+          new CraftingAltarGUI(player).create();
+        }
+      }
     }
 
     if (item == null ) return;
@@ -132,43 +150,6 @@ public class ItemListener implements Listener {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getState() instanceof Container) return;
             Bukkit.broadcastMessage("LOL");
             new FlightRing(item, player);
-          }
-          case CRAFTING_ITEM -> {
-            if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-
-            if (event.getClickedBlock().getType().equals(Material.MAGMA_BLOCK)) {
-              Location magmaLoc = event.getClickedBlock().getLocation();
-              Location altarLoc = new Location(magmaLoc.getWorld(), (double) magmaLoc.getBlockX(), (double) magmaLoc.getBlockY()+1, (double) magmaLoc.getBlockZ());
-
-              BlockData blockData = event.getClickedBlock().getWorld().getBlockData(altarLoc);
-              if (blockData instanceof Tripwire tripwire) {
-                tripwire.setDisarmed(true);
-                tripwire.setAttached(false);
-                tripwire.setFace(BlockFace.NORTH, false);
-                tripwire.setFace(BlockFace.EAST, true);
-                tripwire.setFace(BlockFace.SOUTH, true);
-                tripwire.setFace(BlockFace.WEST, true);
-                tripwire.setPowered(true);
-                Bukkit.broadcastMessage("HELLO-adwfeghjki");
-                if (event.getClickedBlock().getWorld().getBlockData(altarLoc).equals(tripwire)) {
-                  new DarkCraftingManager(item, new Location(event.getClickedBlock().getWorld(), event.getClickedBlock().getX(),event.getClickedBlock().getX()+1.25,event.getClickedBlock().getY()));
-                }
-              }
-            } else if (event.getClickedBlock().getType().equals(Material.TRIPWIRE)) {
-              BlockData blockData = event.getClickedBlock().getBlockData();
-              if (blockData instanceof Tripwire tripwire) {
-                tripwire.setDisarmed(true);
-                tripwire.setAttached(false);
-                tripwire.setFace(BlockFace.NORTH, false);
-                tripwire.setFace(BlockFace.EAST, true);
-                tripwire.setFace(BlockFace.SOUTH, true);
-                tripwire.setFace(BlockFace.WEST, true);
-                tripwire.setPowered(true);
-                if (event.getClickedBlock().getBlockData().equals(tripwire)) {
-                  new DarkCraftingManager(item, event.getClickedBlock().getLocation());
-                }
-              }
-            }
           }
         }
       }

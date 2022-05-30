@@ -1,0 +1,37 @@
+{
+	"type": "0x51:test",
+	"generator": {
+		"biome_source": {
+			"biomes":[
+				{
+					"parameters": {
+						"erosion": 1.0,
+						"depth": 0.0,
+						"weirdness": 0.0,
+						"offset": 0.0,
+						"temperature": 0.0,
+						"humidity": 0.0,
+						"continentalness": 0.0
+					},
+					"biome": "minecraft:ice_spikes"
+				},
+				{
+					"parameters": {
+						"erosion": -1.0,
+						"depth": 0.0,
+						"weirdness": 0.0,
+						"offset": 0.0,
+						"temperature": 0.0,
+						"humidity": 0.0,
+						"continentalness": 0.0
+					},
+					"biome": "minecraft:mushroom_fields"
+				}
+			],
+			"type": "minecraft:multi_noise"
+		},
+		"seed": 0,
+		"settings": "minecraft:floating_islands",
+		"type": "minecraft:noise"
+	}
+}
