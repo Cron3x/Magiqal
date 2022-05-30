@@ -15,4 +15,4 @@ You Will get a new bar above your
 	- [x] eating golden carrot
 	- [x] eating op gaple
 	- [x] totem of unding
-- [ ] implement Flight ring
+- [x] implement Flight ring (recipe does not work currently)
