@@ -19,6 +19,7 @@ import static xyz.eburg.cx.magical.utils.BarCharacter.*;
 
 public class ItemUtils {
   public static Boolean isMagiqal(ItemStack item) {
+    if (item == null) return false;
     PersistentDataContainer itemData = item.getItemMeta().getPersistentDataContainer();
     if (itemData.has(NameSpaceKeys.keyItemMagiqal)){
       return true;
@@ -90,7 +91,7 @@ public class ItemUtils {
       default -> fullIcon + ": " + mana;
     };
 
-    TextComponent tc = Component.text(loreText.toString()).color(TextColor.fromHexString("#FFFFFF")).decoration(TextDecoration.ITALIC, false);
+    TextComponent tc = Component.text(loreText).color(TextColor.fromHexString("#FFFFFF")).decoration(TextDecoration.ITALIC, false);
     if (itemMeta.lore() != null && itemMeta.lore().contains(tc)) return;
     List<Component> lore = List.of(tc);
 
@@ -143,6 +144,7 @@ public class ItemUtils {
       item.setItemMeta(meta);
     }
   public static CraftingRecipe getRecipe(ItemStack item){
+    if (item == null) return CraftingRecipe.NULL;
     PersistentDataContainer itemData = item.getItemMeta().getPersistentDataContainer();
     CraftingRecipe spell = itemData.get(NameSpaceKeys.keyItemRecipe, new CraftingRecipeDataType());
     if (spell == null) return CraftingRecipe.NULL;

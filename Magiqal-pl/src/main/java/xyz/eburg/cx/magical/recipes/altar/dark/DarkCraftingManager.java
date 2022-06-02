@@ -1,23 +1,19 @@
 package xyz.eburg.cx.magical.recipes.altar.dark;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.inventory.ItemStack;
 import xyz.eburg.cx.magical.utils.ItemUtils;
 
-import java.util.Collection;
 
 public class DarkCraftingManager {
-  public DarkCraftingManager(Location location) {
+  public static boolean isMainCraftingItem(ItemStack item){
+    return ItemUtils.getRecipe(item).equals(CraftingRecipe.DIMENSION_SHARD);
+  }
 
-    for (Entity entity : location.getNearbyEntities(1, 1, 1))  {
-      if (entity instanceof Item item) {
-        if (ItemUtils.getRecipe(item.getItemStack()).equals(CraftingRecipe.DIMENSION_SHARD)){
-
-        }
-      }
-    }
+  public static void spawnMainItem(Location location, ItemStack item) {
+    Item itemEntity = location.getWorld().dropItem(location.add(0,1,0), item);
+    itemEntity.setPickupDelay(-1);
+    itemEntity.setWillAge(false);
   }
 }

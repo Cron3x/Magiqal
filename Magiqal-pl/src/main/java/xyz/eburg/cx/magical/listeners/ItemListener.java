@@ -56,13 +56,13 @@ public class ItemListener implements Listener {
   }
 
   @EventHandler
-  public void onUserItem(PlayerInteractEvent event){
+  public void onUserItem(PlayerInteractEvent event) {
     Player player = event.getPlayer();
     ItemStack item = event.getItem();
 
-    if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.SEA_LANTERN)){
+    if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.SEA_LANTERN)) {
       Location beaconLoc = event.getClickedBlock().getLocation();
-      Location altarLoc = new Location(beaconLoc.getWorld(), (double) beaconLoc.getBlockX(), (double) beaconLoc.getBlockY()+1.0, (double) beaconLoc.getBlockZ());
+      Location altarLoc = new Location(beaconLoc.getWorld(), (double) beaconLoc.getBlockX(), (double) beaconLoc.getBlockY() + 1.0, (double) beaconLoc.getBlockZ());
 
       BlockData blockData = event.getClickedBlock().getWorld().getBlockData(altarLoc);
       if (blockData instanceof Tripwire tripwire) {
@@ -78,9 +78,9 @@ public class ItemListener implements Listener {
           new CraftingAltarGUI(player).create();
         }
       }
-    } else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.MAGMA_BLOCK)){
+    } else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getClickedBlock().getType().equals(Material.MAGMA_BLOCK)) {
       Location beaconLoc = event.getClickedBlock().getLocation();
-      Location altarLoc = new Location(beaconLoc.getWorld(), (double) beaconLoc.getBlockX(), (double) beaconLoc.getBlockY()+1.0, (double) beaconLoc.getBlockZ());
+      Location altarLoc = new Location(beaconLoc.getWorld(), (double) beaconLoc.getBlockX(), (double) beaconLoc.getBlockY() + 1.0, (double) beaconLoc.getBlockZ());
 
       BlockData blockData = event.getClickedBlock().getWorld().getBlockData(altarLoc);
       if (blockData instanceof Tripwire tripwire) {
@@ -93,70 +93,74 @@ public class ItemListener implements Listener {
         tripwire.setPowered(true);
         Bukkit.broadcastMessage("HELLO-adwfeghjki");
         if (event.getClickedBlock().getWorld().getBlockData(altarLoc).equals(tripwire)) {
-          new CraftingAltarGUI(player).create();
+          if (!DarkCraftingManager.isMainCraftingItem(item)) return;
+          DarkCraftingManager.spawnMainItem(event.getClickedBlock().getLocation(), item);
+          event.getItem().setType(Material.AIR);
         }
       }
-    }
 
-    if (item == null ) return;
-    if (item.getType() == Material.COMPASS && event.getAction() == Action.RIGHT_CLICK_BLOCK  && event.getClickedBlock().getType() == Material.LODESTONE && !ItemUtils.isMagiqal(item)) {
-      ItemUtils.setMagiqal(item, true);
-      ItemUtils.setItemManaLore(item, 2);
-    }
+      if (item == null) return;
+      if (item.getType() == Material.COMPASS && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.LODESTONE && !ItemUtils.isMagiqal(item)) {
+        ItemUtils.setMagiqal(item, true);
+        ItemUtils.setItemManaLore(item, 2);
+      }
 
-    if (!ItemUtils.isMagiqal(item)) return;
-    switch (item.getType()){
-      case CLOCK -> {
-        switch (ItemUtils.getSpell(item)) {
-          case FIREBALL -> {
-            if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-              player.sendMessage("................:> FIREBALL");
+      if (!ItemUtils.isMagiqal(item)) return;
+      switch (item.getType()) {
+        case CLOCK -> {
+          switch (ItemUtils.getSpell(item)) {
+            case FIREBALL -> {
+              if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                player.sendMessage("................:> FIREBALL");
+              }
             }
-          }
-          case TRANSMUTATION -> {
-            if ((event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.SEA_LANTERN)) {
-              Bukkit.broadcastMessage("> clicked SEA_LANTERN");
-              Location loc = event.getClickedBlock().getLocation();
-              World world = event.getClickedBlock().getLocation().getWorld();
-              if (!(ManaUtils.hasEnoughMana(player, 4))) return;
-              Bukkit.broadcastMessage("> You have enugh Mana");
-              if (!new LightAltarTransmutationSpell(world, loc).conjure()) return;
-              Bukkit.broadcastMessage("> Placment does not failed");
-              ManaUtils.removeManaAmount(player, 4);
+            case TRANSMUTATION -> {
+              if ((event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.SEA_LANTERN)) {
+                Bukkit.broadcastMessage("> clicked SEA_LANTERN");
+                Location loc = event.getClickedBlock().getLocation();
+                World world = event.getClickedBlock().getLocation().getWorld();
+                if (!(ManaUtils.hasEnoughMana(player, 4))) return;
+                Bukkit.broadcastMessage("> You have enugh Mana");
+                if (!new LightAltarTransmutationSpell(world, loc).conjure()) return;
+                Bukkit.broadcastMessage("> Placment does not failed");
+                ManaUtils.removeManaAmount(player, 4);
+              }
+              if ((event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.MAGMA_BLOCK)) {
+                Bukkit.broadcastMessage("> clicked SHROOMLIGHT");
+                Location loc = event.getClickedBlock().getLocation();
+                World world = event.getClickedBlock().getLocation().getWorld();
+                if (!(ManaUtils.hasEnoughMana(player, 4))) return;
+                Bukkit.broadcastMessage("> You have enugh Mana");
+                if (!new DarkAltarTransmutationSpell(world, loc).conjure()) return;
+                Bukkit.broadcastMessage("> Placment does not failed");
+                ManaUtils.removeManaAmount(player, 4);
+              }
+              if ((event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.LODESTONE)) {
+                Bukkit.broadcastMessage("> clicked LODESTONE");
+                Location loc = event.getClickedBlock().getLocation();
+                World world = event.getClickedBlock().getLocation().getWorld();
+                if (!(ManaUtils.hasEnoughMana(player, 4))) return;
+                Bukkit.broadcastMessage("> You have enugh Mana");
+                if (!new TeleporterTransmutationSpell(world, loc).conjure()) return;
+                Bukkit.broadcastMessage("> Placment does not failed");
+                ManaUtils.removeManaAmount(player, 4);
+              }
             }
-            if ((event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.MAGMA_BLOCK)) {
-              Bukkit.broadcastMessage("> clicked SHROOMLIGHT");
-              Location loc = event.getClickedBlock().getLocation();
-              World world = event.getClickedBlock().getLocation().getWorld();
-              if (!(ManaUtils.hasEnoughMana(player, 4))) return;
-              Bukkit.broadcastMessage("> You have enugh Mana");
-              if (!new DarkAltarTransmutationSpell(world, loc).conjure()) return;
-              Bukkit.broadcastMessage("> Placment does not failed");
-              ManaUtils.removeManaAmount(player, 4);
+            case FLIGHT -> {
+              if (!(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))
+                return;
+              if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getState() instanceof Container)
+                return;
+              Bukkit.broadcastMessage("LOL");
+              new FlightRing(item, player);
             }
-            if ((event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.LODESTONE)) {
-              Bukkit.broadcastMessage("> clicked LODESTONE");
-              Location loc = event.getClickedBlock().getLocation();
-              World world = event.getClickedBlock().getLocation().getWorld();
-              if (!(ManaUtils.hasEnoughMana(player, 4))) return;
-              Bukkit.broadcastMessage("> You have enugh Mana");
-              if (!new TeleporterTransmutationSpell(world, loc).conjure()) return;
-              Bukkit.broadcastMessage("> Placment does not failed");
-              ManaUtils.removeManaAmount(player, 4);
-            }
-          }
-          case FLIGHT ->{
-            if (!(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getState() instanceof Container) return;
-            Bukkit.broadcastMessage("LOL");
-            new FlightRing(item, player);
           }
         }
-      }
-      case COMPASS -> {
-        if (!item.getItemMeta().getAsString().contains("LodestoneTracked:1")) return;
-        if (!(event.getAction() == Action.RIGHT_CLICK_AIR || !(event.getAction() == Action.RIGHT_CLICK_BLOCK  && event.getClickedBlock().getType() == Material.LODESTONE))) return;
-        CompassMeta compassMeta = (CompassMeta) item.getItemMeta();
+        case COMPASS -> {
+          if (!item.getItemMeta().getAsString().contains("LodestoneTracked:1")) return;
+          if (!(event.getAction() == Action.RIGHT_CLICK_AIR || !(event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.LODESTONE)))
+            return;
+          CompassMeta compassMeta = (CompassMeta) item.getItemMeta();
 
           double lodeposX = compassMeta.getLodestone().getBlockX();
           double lodeposY = compassMeta.getLodestone().getBlockY();
@@ -167,6 +171,7 @@ public class ItemListener implements Listener {
           if (!ManaUtils.hasEnoughMana(player, cost)) return;
           ManaUtils.removeManaAmount(player, cost);
           player.teleport(new Location(world, lodeposX + 0.5, lodeposY + 1, lodeposZ + 0.5));
+        }
       }
     }
   }
