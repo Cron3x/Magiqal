@@ -19,12 +19,9 @@ import static xyz.eburg.cx.magical.utils.BarCharacter.*;
 
 public class ItemUtils {
   public static Boolean isMagiqal(ItemStack item) {
-    if (item == null) return false;
+    if (item == null || item.getItemMeta() == null) return false;
     PersistentDataContainer itemData = item.getItemMeta().getPersistentDataContainer();
-    if (itemData.has(NameSpaceKeys.keyItemMagiqal)){
-      return true;
-    }
-    return false;
+    return itemData.has(NameSpaceKeys.keyItemMagiqal);
   }
   public static void setMagiqal(ItemStack item, boolean is_magiqal){            //Toggle would be setMagiqal(item, !isMagiqal(item))
     ItemMeta meta = item.getItemMeta();

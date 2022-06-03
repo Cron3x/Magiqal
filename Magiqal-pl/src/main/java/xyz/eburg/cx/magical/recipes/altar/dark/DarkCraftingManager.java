@@ -12,8 +12,9 @@ public class DarkCraftingManager {
   }
 
   public static void spawnMainItem(Location location, ItemStack item) {
-    Item itemEntity = location.getWorld().dropItem(location.add(0,1,0), item);
-    itemEntity.setPickupDelay(-1);
+    Item itemEntity = location.getWorld().dropItem(location.add(0,1.5,0), item);
+    itemEntity.setPickupDelay(32767);
     itemEntity.setWillAge(false);
+    itemEntity.setUnlimitedLifetime(true);
   }
 }
