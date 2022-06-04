@@ -1,5 +1,6 @@
 package xyz.eburg.cx.magical.recipes.altar.dark;
 
+import com.destroystokyo.paper.event.entity.EntityTeleportEndGatewayEvent;
 import org.apache.logging.log4j.core.jmx.LoggerConfigAdmin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,12 +8,16 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.EndGateway;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Tripwire;
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftEnderCrystal;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityPortalEnterEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -66,12 +71,11 @@ public class DarkCraftingManager {
     return false;
   }
 
-  public static void createPortal( Location loc, ItemStack item) {
-
+  public static void createPortal(Item core, Item activation_key) {
+    Location loc = core.getLocation();
     double orginalY = loc.getY();
 
     loc.getWorld().spawnParticle(Particle.FLASH,loc, 1);
-
 
     Location ecLoc0 = new Location(loc.getWorld(), loc.getX()+3,loc.getY()+4, loc.getZ());
     Location ecLoc1 = new Location(loc.getWorld(), loc.getX()-3,loc.getY()+4, loc.getZ());
@@ -106,10 +110,11 @@ public class DarkCraftingManager {
     ec3.setInvulnerable(true);
     //((CraftEnderCrystal) ec).getHandle().setInvisible(true);
 
+    core.teleport(new Location(core.getWorld(), 0,-100,0));
+    activation_key.teleport(new Location(core.getWorld(), 0,-100,0));
 
     new BukkitRunnable() {
-      final double startY = orginalY;
-      final double beamBorder = orginalY+3;
+      final Location beamBorderY = new Location(loc.getWorld(), loc.getX(), orginalY, loc.getZ());
       @Override
       public void run() {
         Location curLoc = startBeamLoc.add(0,0.05,0);
@@ -121,16 +126,28 @@ public class DarkCraftingManager {
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, new Location(curLoc.getWorld(),curLoc.getX(),curLoc.getY()+2,curLoc.getZ()), 10,0, 0, 0, null);
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, new Location(curLoc.getWorld(),curLoc.getX(),curLoc.getY()+1,curLoc.getZ()), 2,0, 0, 0, null);
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, curLoc, 1,0, 0, 0, null);
-        if (startBeamLoc.getY() >= beamBorder) this.cancel();
+        if (startBeamLoc.getY() >= beamBorderY.getY()) {
+          startBeamLoc.getWorld().strikeLightningEffect(beamBorderY.add(0,2,0));
+
+          Block old_block = startBeamLoc.getWorld().getBlockAt(beamBorderY.add(0,2,0));
+          old_block.setType(Material.END_GATEWAY, true);
+          EndGateway endGateway = (EndGateway) old_block.getState();
+          Bukkit.broadcastMessage("-+> "+Bukkit.getServer().getWorlds());
+          Location exitLoc = new Location(startBeamLoc.getWorld(), startBeamLoc.getX(), startBeamLoc.getY(), startBeamLoc.getZ());
+          endGateway.setExitLocation(exitLoc);
+          endGateway.setExactTeleport(true);
+          endGateway.setAge(-9223372036854775808L);
+          endGateway.update();
+
+          this.cancel();
+        }
       }
     }.runTaskTimer(Magical.getInstance(), 20L*2, 1L);
-    new BukkitRunnable() {
-      @Override
-      public void run(){
-        startBeamLoc.getWorld().strikeLightningEffect(startBeamLoc);
+  }
 
-      }
-    }.runTaskLater(Magical.getInstance(), 20L*2);
+  @EventHandler
+  public void onEnterPortal(EntityTeleportEndGatewayEvent event){
+
   }
 }
 

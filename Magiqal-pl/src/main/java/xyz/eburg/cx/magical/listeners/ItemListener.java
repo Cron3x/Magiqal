@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import xyz.eburg.cx.magical.Magical;
@@ -96,7 +97,8 @@ public class ItemListener implements Listener {
         tripwire.setPowered(true);
         Bukkit.broadcastMessage("HELLO-adwfeghjki-dark");
         if (event.getClickedBlock().getWorld().getBlockData(altarLoc).equals(tripwire)) {
-          if (item == null) {
+          if (event.getItem() == null && event.getHand().equals(EquipmentSlot.HAND)) {
+            Bukkit.broadcastMessage("HELLO-hs-dark");
             for (Item itemEntity : altarLoc.getNearbyEntitiesByType(Item.class, 2)){
               if (!DarkCraftingManager.isMainCraftingItem(itemEntity.getItemStack())) continue;
               itemEntity.setCanPlayerPickup(true);
@@ -104,7 +106,7 @@ public class ItemListener implements Listener {
               break;
             }
             return;
-          };
+          }
           if (!DarkCraftingManager.isMainCraftingItem(item)) return;
           if (!DarkCraftingManager.spawnMainItem(event.getClickedBlock().getLocation(), item.asOne())) return;
 
@@ -112,7 +114,6 @@ public class ItemListener implements Listener {
           player.updateInventory();
         }
       }
-      return;
     }
 
 
@@ -143,7 +144,7 @@ public class ItemListener implements Listener {
               ManaUtils.removeManaAmount(player, 4);
             }
             if ((event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.MAGMA_BLOCK)) {
-              Bukkit.broadcastMessage("> clicked SHROOMLIGHT");
+              Bukkit.broadcastMessage("> clicked MAGMA_BLOCK");
               Location loc = event.getClickedBlock().getLocation();
               World world = event.getClickedBlock().getLocation().getWorld();
               if (!(ManaUtils.hasEnoughMana(player, 4))) return;
@@ -236,7 +237,7 @@ public class ItemListener implements Listener {
     Bukkit.broadcastMessage("is a valid activation");
     for (Item item : event.getItemDrop().getWorld().getNearbyEntitiesByType(Item.class, event.getItemDrop().getLocation(), 4)) {
       if (!DarkCraftingManager.isMainCraftingItem(item.getItemStack())) continue;
-      DarkCraftingManager.createPortal(item.getLocation(),item.getItemStack());
+      DarkCraftingManager.createPortal(item, event.getItemDrop());
       break;
     }
     //DarkCraftingManager.isAltar(event.getItemDrop().getLocation().getBlock());
