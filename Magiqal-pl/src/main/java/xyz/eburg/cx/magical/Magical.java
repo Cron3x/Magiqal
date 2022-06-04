@@ -25,6 +25,13 @@ import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 import static net.minecraft.commands.arguments.EntityArgument.players;
 
+//TODO:
+/*
+* On world generation download/load Datapack
+*
+*/
+
+
 public final class Magical extends JavaPlugin implements Listener {
   FileConfiguration config = getConfig();
   private static Magical instance;

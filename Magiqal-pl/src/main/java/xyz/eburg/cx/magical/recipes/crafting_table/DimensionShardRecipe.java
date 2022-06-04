@@ -21,7 +21,7 @@ public class DimensionShardRecipe {
   public DimensionShardRecipe() {
     ItemStack result = new ItemStack(Material.CLOCK);
     ItemMeta meta = result.getItemMeta();
-    meta.setCustomModelData(100);
+    meta.setCustomModelData(101);
     TextComponent name = Component.text("Unused Dimension Shard").decoration(TextDecoration.ITALIC, false);
     meta.displayName(name);
     List<Component> lore = List.of(Component.text("More Information in ").color(TextColor.fromHexString("#8d00ff")).decoration(TextDecoration.ITALIC, false), Component.text("Quandalfs Guide").color(TextColor.fromHexString("#CC00FF")).decoration(TextDecoration.ITALIC, false)); // 8d00ff
