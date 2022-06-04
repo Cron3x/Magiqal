@@ -88,20 +88,17 @@ public class DarkCraftingManager {
     Bukkit.broadcastMessage("@>> "+ec0.getBeamTarget());
     ec0.setInvulnerable(true);
 
-
     EnderCrystal ec1 = (EnderCrystal) loc.getWorld().spawnEntity(ecLoc1, EntityType.ENDER_CRYSTAL);
     ec1.setShowingBottom(false);
     ec1.setBeamTarget(startBeamLoc);
     Bukkit.broadcastMessage("@>> "+ec1.getBeamTarget());
     ec1.setInvulnerable(true);
 
-
     EnderCrystal ec2 = (EnderCrystal) loc.getWorld().spawnEntity(ecLoc2, EntityType.ENDER_CRYSTAL);
     ec2.setShowingBottom(false);
     ec2.setBeamTarget(startBeamLoc);
     Bukkit.broadcastMessage("@>> "+ec2.getBeamTarget());
     ec2.setInvulnerable(true);
-
 
     EnderCrystal ec3 = (EnderCrystal) loc.getWorld().spawnEntity(ecLoc3, EntityType.ENDER_CRYSTAL);
     ec3.setShowingBottom(false);
@@ -110,7 +107,6 @@ public class DarkCraftingManager {
     ec3.setInvulnerable(true);
     //((CraftEnderCrystal) ec).getHandle().setInvisible(true);
 
-    core.teleport(new Location(core.getWorld(), 0,-100,0));
     activation_key.teleport(new Location(core.getWorld(), 0,-100,0));
 
     new BukkitRunnable() {
@@ -129,15 +125,8 @@ public class DarkCraftingManager {
         if (startBeamLoc.getY() >= beamBorderY.getY()) {
           startBeamLoc.getWorld().strikeLightningEffect(beamBorderY.add(0,2,0));
 
-          Block old_block = startBeamLoc.getWorld().getBlockAt(beamBorderY.add(0,2,0));
-          old_block.setType(Material.END_GATEWAY, true);
-          EndGateway endGateway = (EndGateway) old_block.getState();
-          Bukkit.broadcastMessage("-+> "+Bukkit.getServer().getWorlds());
-          Location exitLoc = new Location(startBeamLoc.getWorld(), startBeamLoc.getX(), startBeamLoc.getY(), startBeamLoc.getZ());
-          endGateway.setExitLocation(exitLoc);
-          endGateway.setExactTeleport(true);
-          endGateway.setAge(-9223372036854775808L);
-          endGateway.update();
+
+          ItemUtils.Dimension.add(core.getItemStack());
 
           this.cancel();
         }
@@ -145,11 +134,9 @@ public class DarkCraftingManager {
     }.runTaskTimer(Magical.getInstance(), 20L*2, 1L);
   }
 
-  @EventHandler
-  public void onEnterPortal(EntityTeleportEndGatewayEvent event){
 
-  }
 }
+
 
 /* {
  *  "core": "",

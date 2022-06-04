@@ -134,12 +134,12 @@ public class ItemUtils {
     item.setItemMeta(meta);
   }
 
-    public static void setRecipe(ItemStack item, CraftingRecipe recipe) {
-      ItemMeta meta = item.getItemMeta();
-      PersistentDataContainer itemData = meta.getPersistentDataContainer();
-      itemData.set(NameSpaceKeys.keyItemRecipe, new CraftingRecipeDataType(), recipe);
-      item.setItemMeta(meta);
-    }
+  public static void setRecipe(ItemStack item, CraftingRecipe recipe) {
+    ItemMeta meta = item.getItemMeta();
+    PersistentDataContainer itemData = meta.getPersistentDataContainer();
+    itemData.set(NameSpaceKeys.keyItemRecipe, new CraftingRecipeDataType(), recipe);
+    item.setItemMeta(meta);
+  }
   public static CraftingRecipe getRecipe(ItemStack item){
     if (item == null) return CraftingRecipe.NULL;
     PersistentDataContainer itemData = item.getItemMeta().getPersistentDataContainer();
@@ -147,4 +147,14 @@ public class ItemUtils {
     if (spell == null) return CraftingRecipe.NULL;
     return spell;
   }
+
+  public static class Dimension{
+    public static void add(ItemStack item){
+
+    }
+    public static void remove(){
+
+    }
+  }
+
 }
