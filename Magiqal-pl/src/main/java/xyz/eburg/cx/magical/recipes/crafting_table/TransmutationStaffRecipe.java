@@ -11,8 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.eburg.cx.magical.Magical;
-import xyz.eburg.cx.magical.spells.MagicSpell;
-import xyz.eburg.cx.magical.utils.BarCharacter;
+import xyz.eburg.cx.magical.data_types.MagicSpell;
 import xyz.eburg.cx.magical.utils.ItemUtils;
 
 import java.util.List;

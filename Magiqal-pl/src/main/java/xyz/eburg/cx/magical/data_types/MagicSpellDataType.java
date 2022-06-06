@@ -1,4 +1,4 @@
-package xyz.eburg.cx.magical.spells;
+package xyz.eburg.cx.magical.data_types;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.bukkit.persistence.PersistentDataAdapterContext;

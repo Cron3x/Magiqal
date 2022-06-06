@@ -1,4 +1,4 @@
-package xyz.eburg.cx.magical.utils;
+package xyz.eburg.cx.magical.teleport;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,18 +29,19 @@ public class TeleporterUtils {
     new File(confFile, "teleporters.json").delete(); // won't throw an exception, don't worry.
     Files.write(confFile.toPath(), json.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
   }
-}
+  static class Teleporter {
+    private int id;
+    private String name;
+    private Color color;
+    private Location location;
 
-class Teleporter {
-  private int id;
-  private String name;
-  private Color color;
-  private Location location;
-
-  public Teleporter(int id, String name, Color color, Location location) {
-    this.id = id;
-    this.name = name;
-    this.color = color;
-    this.location = location;
+    public Teleporter(int id, String name, Color color, Location location) {
+      this.id = id;
+      this.name = name;
+      this.color = color;
+      this.location = location;
+    }
   }
 }
+
+

@@ -9,21 +9,25 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.eburg.cx.magical.listeners.InventoryListener;
 import xyz.eburg.cx.magical.listeners.ItemListener;
-import xyz.eburg.cx.magical.recipes.crafting_table.DimensionShardRecipe;
+import xyz.eburg.cx.magical.recipes.crafting_table.DimensionCoreRecipe;
 import xyz.eburg.cx.magical.recipes.crafting_table.FlightRingRecipe;
 import xyz.eburg.cx.magical.recipes.crafting_table.GuideBookRecipe;
 import xyz.eburg.cx.magical.recipes.crafting_table.TransmutationStaffRecipe;
 import xyz.eburg.cx.magical.tasks.ShowManaTask;
+import xyz.eburg.cx.magical.utils.EnchantGlow;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 import static net.minecraft.commands.arguments.EntityArgument.players;
+import static xyz.eburg.cx.magical.utils.EnchantGlow.registerGlow;
 
 //TODO:
 /*
@@ -41,6 +45,8 @@ public final class Magical extends JavaPlugin implements Listener {
   @Override
   public void onEnable() {
     instance = this;
+
+    registerGlow();
 
     config.addDefault("enable_magic_recipes", true);
     config.addDefault("enable_magic_destruction", false);
@@ -62,7 +68,7 @@ public final class Magical extends JavaPlugin implements Listener {
     new GuideBookRecipe();
     new TransmutationStaffRecipe();
     new FlightRingRecipe();
-    new DimensionShardRecipe();
+    new DimensionCoreRecipe();
 
     /* Debug Commands */
     ((CraftServer) this.getServer()).getServer().vanillaCommandDispatcher.getDispatcher().register(

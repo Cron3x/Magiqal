@@ -11,20 +11,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityResurrectEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import xyz.eburg.cx.magical.Magical;
+import xyz.eburg.cx.magical.data_types.Dimension;
 import xyz.eburg.cx.magical.recipes.altar.dark.DarkCraftingManager;
+import xyz.eburg.cx.magical.data_types.MagicSpell;
 import xyz.eburg.cx.magical.spells.*;
 import xyz.eburg.cx.magical.tasks.ShowManaTask;
+import xyz.eburg.cx.magical.teleport.TeleportManager;
 import xyz.eburg.cx.magical.ui.CraftingAltarGUI;
 import xyz.eburg.cx.magical.utils.ItemUtils;
 import xyz.eburg.cx.magical.utils.ManaUtils;
-
-import java.util.Arrays;
 
 public class ItemListener implements Listener {
   @EventHandler
@@ -232,15 +234,23 @@ public class ItemListener implements Listener {
   //Migrate to own file
   @EventHandler
   public void onDrop(PlayerDropItemEvent event){
-    Bukkit.broadcastMessage("Drop");
+    Bukkit.broadcastMessage("Drop :: " + event.getItemDrop().getLocation().subtract(0,1,0).getBlock().getType());
+
+    //Location is at player -> Fix!
+    if (event.getItemDrop().getLocation().getBlock().getType().equals(Material.SOUL_CAMPFIRE)) {
+      Bukkit.broadcastMessage("::> "+ItemUtils.getDimension(event.getItemDrop().getItemStack()));
+      if (ItemUtils.getDimension(event.getItemDrop().getItemStack()).equals(Dimension.NULL)) return;
+      TeleportManager.teleport(event.getItemDrop());
+    }
+    //if (DarkCraftingManager.isAltar(event.getItemDrop().getLocation().getBlock()))
     if (!DarkCraftingManager.recipes.contains(event.getItemDrop().getItemStack().getType())) return;
     Bukkit.broadcastMessage("is a valid activation");
     for (Item item : event.getItemDrop().getWorld().getNearbyEntitiesByType(Item.class, event.getItemDrop().getLocation(), 4)) {
       if (!DarkCraftingManager.isMainCraftingItem(item.getItemStack())) continue;
-      DarkCraftingManager.createPortal(item, event.getItemDrop());
+      DarkCraftingManager.initCraft(item, event.getItemDrop());
       break;
     }
     //DarkCraftingManager.isAltar(event.getItemDrop().getLocation().getBlock());
-
   }
+
 }

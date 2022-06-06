@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import xyz.eburg.cx.magical.recipes.altar.light.TotemOfFlight;
-import xyz.eburg.cx.magical.spells.MagicSpell;
+import xyz.eburg.cx.magical.data_types.MagicSpell;
 import xyz.eburg.cx.magical.utils.ItemUtils;
 
 public class CraftingAltarGUI {

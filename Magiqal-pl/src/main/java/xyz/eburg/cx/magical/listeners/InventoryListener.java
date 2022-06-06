@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import xyz.eburg.cx.magical.spells.FlightRing;
-import xyz.eburg.cx.magical.spells.MagicSpell;
+import xyz.eburg.cx.magical.data_types.MagicSpell;
 import xyz.eburg.cx.magical.ui.CraftingAltarGUI;
 import xyz.eburg.cx.magical.utils.ItemUtils;
 

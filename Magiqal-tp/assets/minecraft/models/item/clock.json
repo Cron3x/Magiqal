@@ -71,7 +71,8 @@
         { "predicate": { "time": 0.9921875 }, "model": "item/clock" },
 	{ "predicate": { "custom_model_data": 1}, "model": "item/magiqal_items/transmutation_staff" },
 	{ "predicate": { "custom_model_data": 2}, "model": "item/magiqal_items/totem_of_flight" },
-    { "predicate": { "custom_model_data": 100}, "model": "item/magiqal_items/unused_dimension_shard" },
-    { "predicate": { "custom_model_data": 101}, "model": "item/magiqal_items/used_dimension_shard" }
+    { "predicate": { "custom_model_data": 100}, "model": "item/magiqal_items/dimension_core" },
+    { "predicate": { "custom_model_data": 101}, "model": "item/magiqal_items/dimension_core_used" },
+    { "predicate": { "custom_model_data": 102}, "model": "item/magiqal_items/dimension_shard" }
     ]
 }

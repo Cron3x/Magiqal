@@ -1,31 +1,24 @@
 package xyz.eburg.cx.magical.recipes.altar.dark;
 
-import com.destroystokyo.paper.event.entity.EntityTeleportEndGatewayEvent;
-import org.apache.logging.log4j.core.jmx.LoggerConfigAdmin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.EndGateway;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Tripwire;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftEnderCrystal;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityPortalEnterEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import xyz.eburg.cx.magical.Magical;
+import xyz.eburg.cx.magical.data_types.CraftingRecipe;
+import xyz.eburg.cx.magical.data_types.Dimension;
 import xyz.eburg.cx.magical.utils.ItemUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,7 +64,7 @@ public class DarkCraftingManager {
     return false;
   }
 
-  public static void createPortal(Item core, Item activation_key) {
+  public static void initCraft(Item core, Item activation_key) {
     Location loc = core.getLocation();
     double orginalY = loc.getY();
 
@@ -111,6 +104,7 @@ public class DarkCraftingManager {
 
     new BukkitRunnable() {
       final Location beamBorderY = new Location(loc.getWorld(), loc.getX(), orginalY, loc.getZ());
+      double vel = 0;
       @Override
       public void run() {
         Location curLoc = startBeamLoc.add(0,0.05,0);
@@ -122,11 +116,14 @@ public class DarkCraftingManager {
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, new Location(curLoc.getWorld(),curLoc.getX(),curLoc.getY()+2,curLoc.getZ()), 10,0, 0, 0, null);
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, new Location(curLoc.getWorld(),curLoc.getX(),curLoc.getY()+1,curLoc.getZ()), 2,0, 0, 0, null);
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, curLoc, 1,0, 0, 0, null);
+        vel = vel + 0.005;
+        core.setVelocity(new Vector(0,vel,0));
         if (startBeamLoc.getY() >= beamBorderY.getY()) {
           startBeamLoc.getWorld().strikeLightningEffect(beamBorderY.add(0,2,0));
 
-
-          ItemUtils.Dimension.add(core.getItemStack());
+          ItemStack newItem = DimensionCoreUsedRecipe.edit(core.getItemStack(), Dimension.END);
+          startBeamLoc.getWorld().dropItem(startBeamLoc, newItem);
+          core.teleport(new Location(core.getWorld(), 0,-100,0));
 
           this.cancel();
         }

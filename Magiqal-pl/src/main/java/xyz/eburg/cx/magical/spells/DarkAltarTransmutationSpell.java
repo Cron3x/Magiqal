@@ -1,6 +1,5 @@
 package xyz.eburg.cx.magical.spells;
 
-import net.kyori.adventure.sound.Sound;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

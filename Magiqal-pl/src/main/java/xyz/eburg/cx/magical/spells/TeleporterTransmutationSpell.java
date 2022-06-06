@@ -1,20 +1,12 @@
 package xyz.eburg.cx.magical.spells;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import xyz.eburg.cx.magical.Magical;
-import xyz.eburg.cx.magical.utils.TeleporterUtils;
+import xyz.eburg.cx.magical.teleport.TeleporterUtils;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.util.HashMap;
 
 public class TeleporterTransmutationSpell {
   private final World world;

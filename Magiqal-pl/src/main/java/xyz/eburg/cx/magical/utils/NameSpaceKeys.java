@@ -18,6 +18,7 @@ public interface NameSpaceKeys {
 
   NamespacedKey keyItemFlying = new NamespacedKey(Magical.getInstance(), "flying");
 
+  NamespacedKey keyItemDimension = new NamespacedKey(Magical.getInstance(), "dimensuin");
   static void addPersistenceKeys(Player player) {
     PersistentDataContainer dataContainer = player.getPersistentDataContainer();
     if (!dataContainer.has(keyManaAmount)) dataContainer.set(keyManaAmount, PersistentDataType.INTEGER, 0); //should 52

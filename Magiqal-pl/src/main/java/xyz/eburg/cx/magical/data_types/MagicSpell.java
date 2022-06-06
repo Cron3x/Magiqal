@@ -1,4 +1,4 @@
-package xyz.eburg.cx.magical.spells;
+package xyz.eburg.cx.magical.data_types;
 
 import java.io.Serializable;
 

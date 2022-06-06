@@ -1,4 +1,4 @@
-package xyz.eburg.cx.magical.recipes.altar.dark;
+package xyz.eburg.cx.magical.data_types;
 
 public enum CraftingRecipe {
   DIMENSION_SHARD,

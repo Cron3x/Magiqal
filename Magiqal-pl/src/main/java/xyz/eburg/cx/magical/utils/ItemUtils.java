@@ -8,10 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import xyz.eburg.cx.magical.recipes.altar.dark.CraftingRecipe;
-import xyz.eburg.cx.magical.recipes.altar.dark.CraftingRecipeDataType;
-import xyz.eburg.cx.magical.spells.MagicSpell;
-import xyz.eburg.cx.magical.spells.MagicSpellDataType;
+import xyz.eburg.cx.magical.data_types.*;
 
 import java.util.List;
 
@@ -148,13 +145,18 @@ public class ItemUtils {
     return spell;
   }
 
-  public static class Dimension{
-    public static void add(ItemStack item){
-
-    }
-    public static void remove(){
-
-    }
+  public static void setDimension(ItemStack item, xyz.eburg.cx.magical.data_types.Dimension dimension){
+    ItemMeta meta = item.getItemMeta();
+    PersistentDataContainer itemData = meta.getPersistentDataContainer();
+    itemData.set(NameSpaceKeys.keyItemRecipe, new DimensionDataType(), dimension);
+    item.setItemMeta(meta);
   }
 
+  public static xyz.eburg.cx.magical.data_types.Dimension getDimension(ItemStack item){
+    if (item == null) return xyz.eburg.cx.magical.data_types.Dimension.NULL;
+    PersistentDataContainer itemData = item.getItemMeta().getPersistentDataContainer();
+    xyz.eburg.cx.magical.data_types.Dimension dimension = itemData.get(NameSpaceKeys.keyItemRecipe, new DimensionDataType());
+    if (dimension == null) return xyz.eburg.cx.magical.data_types.Dimension.NULL;
+    return dimension;
+  }
 }
