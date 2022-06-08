@@ -21,7 +21,8 @@ import xyz.eburg.cx.magical.recipes.crafting_table.TransmutationStaffRecipe;
 import xyz.eburg.cx.magical.tasks.ShowManaTask;
 import xyz.eburg.cx.magical.utils.EnchantGlow;
 
-import java.lang.reflect.Field;
+import xyz.eburg.cx.magical.kotlin.*;
+
 import java.util.Collection;
 
 import static net.minecraft.commands.Commands.argument;
@@ -45,6 +46,9 @@ public final class Magical extends JavaPlugin implements Listener {
   @Override
   public void onEnable() {
     instance = this;
+
+    new Magiqalkt();
+    new Magiqalkt().onEnable();
 
     registerGlow();
 
@@ -92,5 +96,10 @@ public final class Magical extends JavaPlugin implements Listener {
             return players.size();
           }))
     );
+  }
+
+  @Override
+  public void onDisable(){
+    new Magiqalkt().onDisable();
   }
 }

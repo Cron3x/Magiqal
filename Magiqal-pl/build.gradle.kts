@@ -1,10 +1,12 @@
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   `java-library`
   id("io.papermc.paperweight.userdev") version "1.3.6"
   id("xyz.jpenilla.run-paper") version "1.0.6" // Adds runServer and runMojangMappedServer tasks for testing
   id("net.minecrell.plugin-yml.bukkit") version "0.5.1" // Generates plugin.yml
+  kotlin("jvm") version "1.7.0-RC2"
 }
 
 group = "xyz.eburg.cx"
@@ -23,6 +25,7 @@ dependencies {
   // You will need to manually specify the full dependency if using the groovy gradle dsl
   // (paperDevBundle and paperweightDevBundle functions do not work in groovy)
   // paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:1.18.2-R0.1-SNAPSHOT")
+  implementation(kotlin("stdlib-jdk8"))
 }
 
 tasks {
@@ -60,4 +63,15 @@ bukkit {
   main = "xyz.eburg.cx.magical.Magical"
   apiVersion = "1.18"
   authors = listOf("Cron3x")
+}
+repositories {
+  mavenCentral()
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+  jvmTarget = "1.8"
+}
+val compileTestKotlin: KotlinCompile by tasks
+compileTestKotlin.kotlinOptions {
+  jvmTarget = "1.8"
 }
