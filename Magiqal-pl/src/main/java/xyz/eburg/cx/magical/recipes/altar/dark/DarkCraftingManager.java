@@ -70,6 +70,8 @@ public class DarkCraftingManager {
 
     loc.getWorld().spawnParticle(Particle.FLASH,loc, 1);
 
+
+    //TODO: Add particles while the endcrystaks are spawning
     Location ecLoc0 = new Location(loc.getWorld(), loc.getX()+3,loc.getY()+4, loc.getZ());
     Location ecLoc1 = new Location(loc.getWorld(), loc.getX()-3,loc.getY()+4, loc.getZ());
     Location ecLoc2 = new Location(loc.getWorld(), loc.getX(),loc.getY()+4, loc.getZ()+3);
