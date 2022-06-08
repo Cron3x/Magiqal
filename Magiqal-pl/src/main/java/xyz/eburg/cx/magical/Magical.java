@@ -33,7 +33,7 @@ import static xyz.eburg.cx.magical.utils.EnchantGlow.registerGlow;
 //TODO:
 /*
 * On world generation download/load Datapack
-*
+* Write Bosses in Kotlin, maybe
 */
 
 
@@ -47,7 +47,6 @@ public final class Magical extends JavaPlugin implements Listener {
   public void onEnable() {
     instance = this;
 
-    new Magiqalkt();
     new Magiqalkt().onEnable();
 
     registerGlow();

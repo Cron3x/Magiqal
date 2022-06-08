@@ -116,7 +116,7 @@ public class DarkCraftingManager {
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, new Location(curLoc.getWorld(),curLoc.getX(),curLoc.getY()+2,curLoc.getZ()), 10,0, 0, 0, null);
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, new Location(curLoc.getWorld(),curLoc.getX(),curLoc.getY()+1,curLoc.getZ()), 2,0, 0, 0, null);
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, curLoc, 1,0, 0, 0, null);
-        vel = vel + 0.005;
+        vel = 1;
         core.setVelocity(new Vector(0,vel,0));
         if (startBeamLoc.getY() >= beamBorderY.getY()) {
           startBeamLoc.getWorld().strikeLightningEffect(beamBorderY.add(0,2,0));
@@ -129,6 +129,13 @@ public class DarkCraftingManager {
         }
       }
     }.runTaskTimer(Magical.getInstance(), 20L*2, 1L);
+    Bukkit.getScheduler().runTaskLater(Magical.getInstance(), () -> {
+      ec0.remove();
+      ec1.remove();
+      ec1.remove();
+      ec2.remove();
+      ec3.remove();
+    }, 20);
   }
 
 

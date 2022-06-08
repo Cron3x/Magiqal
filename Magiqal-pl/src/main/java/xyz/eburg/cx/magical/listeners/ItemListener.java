@@ -237,10 +237,11 @@ public class ItemListener implements Listener {
     Bukkit.broadcastMessage("Drop :: " + event.getItemDrop().getLocation().subtract(0,1,0).getBlock().getType());
 
     //Location is at player -> Fix!
-    if (event.getItemDrop().getLocation().getBlock().getType().equals(Material.SOUL_CAMPFIRE)) {
+    if (event.getItemDrop().getLocation().subtract(0,1,0).getBlock().getType().equals(Material.SOUL_CAMPFIRE)) {
       Bukkit.broadcastMessage("::> "+ItemUtils.getDimension(event.getItemDrop().getItemStack()));
       if (ItemUtils.getDimension(event.getItemDrop().getItemStack()).equals(Dimension.NULL)) return;
       TeleportManager.teleport(event.getItemDrop());
+      return;
     }
     //if (DarkCraftingManager.isAltar(event.getItemDrop().getLocation().getBlock()))
     if (!DarkCraftingManager.recipes.contains(event.getItemDrop().getItemStack().getType())) return;
