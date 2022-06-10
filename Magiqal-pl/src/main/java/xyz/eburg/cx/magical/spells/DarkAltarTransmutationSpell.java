@@ -5,6 +5,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Candle;
 import org.bukkit.block.data.type.Tripwire;
+import org.bukkit.scheduler.BukkitRunnable;
+import xyz.eburg.cx.magical.Magical;
 
 public class DarkAltarTransmutationSpell {
   private final World world;
@@ -77,34 +79,56 @@ public class DarkAltarTransmutationSpell {
 
     pillarE4.getBlock().setBlockData(candle);
 
-    double h = 0.0;
     altarPos.getWorld().spawnParticle(Particle.FLASH, new Location(altarPos.getWorld(), altarPos.getX(), altarPos.getY()+1, altarPos.getZ()), 1);
-    for (int d = 0; d <= 90; d += 1) {
-      Location particleLoc = new Location(altarPos.getWorld(), altarPos.getX(), altarPos.getY()-1+h, altarPos.getZ());
-      particleLoc.setX(altarPos.getX() + Math.cos(d) * 2);
-      particleLoc.setZ(altarPos.getZ() + Math.sin(d) * 2);
-      altarPos.getWorld().spawnParticle(Particle.TOTEM, particleLoc, 1);
-      altarPos.getWorld().spawnParticle(Particle.REDSTONE, particleLoc, 10, new Particle.DustOptions(Color.fromRGB(255,100,0), 5));
-      if (d == 0) {
-        this.world.strikeLightningEffect(pillarS4);
-        pillarE4.getBlock().setBlockData(candle);
-      }
-      if (d == 11) {
-        this.world.strikeLightningEffect(pillarN4);
-        pillarS4.getBlock().setBlockData(candle);
-      }
-      if (d == 22) {
-        this.world.strikeLightningEffect(pillarE4);
-        pillarW4.getBlock().setBlockData(candle);
-      }
-      if (d == 33) {
-        this.world.strikeLightningEffect(pillarW4);
-        pillarS4.getBlock().setBlockData(candle);
-      }
+    new BukkitRunnable() {
+      double h = 0.0;
+      boolean pil1 = false;
+      boolean pil2 = false;
+      boolean pil3 = false;
 
-      //if (d == 90) ((Candle) pillarE4.getBlock().getBlockData()).setLit(true);
-      h += 0.025;
-    }
+      @Override
+      public void run(){
+        for (double d = 0; d <= 90; d += 0.1) {
+          Location particleLoc = new Location(altarPos.getWorld(), altarPos.getX(), altarPos.getY()-1+h, altarPos.getZ());
+          particleLoc.setX(altarPos.getX() + Math.cos(d) * 2);
+          particleLoc.setZ(altarPos.getZ() + Math.sin(d) * 2);
+          Location particleLocRev = new Location(altarPos.getWorld(), altarPos.getX(), altarPos.getY()-1+h, altarPos.getZ());
+          particleLocRev.setX(altarPos.getX() + Math.sin(d) * 2);
+          particleLocRev.setZ(altarPos.getZ() + Math.cos(d) * 2);
+          //altarPos.getWorld().spawnParticle(Particle.TOTEM, particleLoc, 1, 0,0,0, 100, null, true);
+          altarPos.getWorld().spawnParticle(Particle.END_ROD, particleLoc, 1, 0, 0, 0, 0);
+          altarPos.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, particleLocRev, 5, 0, 0, 0, 0);
+          if (d == 0) {
+            Bukkit.broadcastMessage("?=> 0");
+            world.strikeLightningEffect(pillarS4);
+            pillarE4.getBlock().setBlockData(candle);
+            altarPos.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, particleLocRev, 15, 0, 0, 0, 0);
+          } else if (d > 10 && d < 12 && !this.pil1) {
+            this.pil1 = true;
+            Bukkit.broadcastMessage("?=> 11");
+            world.strikeLightningEffect(pillarN4);
+            pillarS4.getBlock().setBlockData(candle);
+            altarPos.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, particleLocRev, 15, 0, 0, 0, 0);
+          } else if (d > 21 && d < 23 && !this.pil2) {
+            this.pil2 = true;
+            Bukkit.broadcastMessage("?=> 22");
+            world.strikeLightningEffect(pillarE4);
+            pillarW4.getBlock().setBlockData(candle);
+            altarPos.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, particleLocRev, 15, 0, 0, 0, 0);
+          } else if (d > 32 && d < 33 && !this.pil3) {
+            this.pil3 = true;
+            Bukkit.broadcastMessage("?=> 33");
+            world.strikeLightningEffect(pillarW4);
+            pillarS4.getBlock().setBlockData(candle);
+            altarPos.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, particleLocRev, 15, 0, 0, 0, 0);
+          }
+          //Bukkit.broadcastMessage(""+d);
+          //if (d == 90) ((Candle) pillarE4.getBlock().getBlockData()).setLit(true);
+          h += 0.01;
+        }
+      }
+    }.runTask(Magical.getInstance());
+
     Block customBlock = this.world.getBlockAt(altarPos);
     customBlock.setType(Material.TRIPWIRE, true);
     Tripwire tripwire = (Tripwire) customBlock.getBlockData();

@@ -70,7 +70,6 @@ public class DarkCraftingManager {
 
     loc.getWorld().spawnParticle(Particle.FLASH,loc, 1);
 
-
     //TODO: Add particles while the endcrystaks are spawning
     Location ecLoc0 = new Location(loc.getWorld(), loc.getX()+3,loc.getY()+4, loc.getZ());
     Location ecLoc1 = new Location(loc.getWorld(), loc.getX()-3,loc.getY()+4, loc.getZ());
@@ -100,7 +99,7 @@ public class DarkCraftingManager {
     ec3.setBeamTarget(startBeamLoc);
     Bukkit.broadcastMessage("@>> "+ec3.getBeamTarget());
     ec3.setInvulnerable(true);
-    //((CraftEnderCrystal) ec).getHandle().setInvisible(true);
+    //Doesn't work right now:   ((CraftEnderCrystal) ec).getHandle().setInvisible(true);
 
     activation_key.teleport(new Location(core.getWorld(), 0,-100,0));
 
@@ -118,32 +117,30 @@ public class DarkCraftingManager {
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, new Location(curLoc.getWorld(),curLoc.getX(),curLoc.getY()+2,curLoc.getZ()), 10,0, 0, 0, null);
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, new Location(curLoc.getWorld(),curLoc.getX(),curLoc.getY()+1,curLoc.getZ()), 2,0, 0, 0, null);
         loc.getWorld().spawnParticle(Particle.ELECTRIC_SPARK, curLoc, 1,0, 0, 0, null);
-        vel = 1;
+        vel = 0.065;
         core.setVelocity(new Vector(0,vel,0));
         if (startBeamLoc.getY() >= beamBorderY.getY()) {
           startBeamLoc.getWorld().strikeLightningEffect(beamBorderY.add(0,2,0));
 
           ItemStack newItem = DimensionCoreUsedRecipe.edit(core.getItemStack(), Dimension.END);
-          startBeamLoc.getWorld().dropItem(startBeamLoc, newItem);
+          startBeamLoc.getWorld().dropItem(startBeamLoc.add(0,2,0), newItem);
           core.teleport(new Location(core.getWorld(), 0,-100,0));
+
+          Bukkit.getScheduler().runTaskLater(Magical.getInstance(), () -> {
+            ec0.remove();
+            ec1.remove();
+            ec1.remove();
+            ec2.remove();
+            ec3.remove();
+          }, 20);
 
           this.cancel();
         }
       }
     }.runTaskTimer(Magical.getInstance(), 20L*2, 1L);
-    Bukkit.getScheduler().runTaskLater(Magical.getInstance(), () -> {
-      ec0.remove();
-      ec1.remove();
-      ec1.remove();
-      ec2.remove();
-      ec3.remove();
-    }, 20);
+
   }
-
-
 }
-
-
 /* {
  *  "core": "",
  *  "activation":"",
